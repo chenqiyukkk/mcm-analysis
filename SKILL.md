@@ -69,7 +69,20 @@ User provides problem (PDF/text)
          │
          ▼
 ┌─────────────────────────────────────┐
-│ PHASE 4: Quality Check              │
+│ PHASE 4: Visualization              │
+│                                     │
+│ 1. Select chart type (Guide)        │
+│ 2. Use templates (mcm_style)        │
+│ 3. Generate multi-panel figures     │
+│ 4. Create flowcharts (Schematics)   │
+│                                     │
+│ Reference: visualization-guide.md   │
+│ Templates: templates/visualization/ │
+└─────────────────────────────────────┘
+         │
+         ▼
+┌─────────────────────────────────────┐
+│ PHASE 5: Quality Check              │
 │                                     │
 │ 1. Format compliance (25 pages)     │
 │ 2. Section completeness             │
@@ -157,6 +170,7 @@ This skill automatically integrates with:
 | `references/paper-structure.md` | O-award paper structure templates |
 | `references/writing-guide.md` | Academic writing phrases and patterns |
 | `references/anti-ai-patterns.md` | Human writing style guide |
+| `references/visualization-guide.md` | Chart selection & O-award visualization patterns |
 | `references/judging-criteria.md` | COMAP official judging standards |
 
 ## Scripts

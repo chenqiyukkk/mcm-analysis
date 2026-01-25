@@ -1,0 +1,57 @@
+# MCM/ICM Publication Quality Style
+# Based on Okabe-Ito color palette (Colorblind Safe)
+# Optimized for 3.5" (single column) and 7" (double column) widths
+
+# --- Figure Layout ---
+figure.figsize: 7.0, 4.5    # Default to double column width, adjust in code if needed
+figure.dpi: 300             # Print quality
+figure.facecolor: white
+figure.autolayout: True     # Tight layout equivalent
+
+# --- Fonts ---
+font.family: sans-serif
+font.sans-serif: Arial, Helvetica, DejaVu Sans, Bitstream Vera Sans, sans-serif
+font.size: 10
+text.color: 333333
+
+# --- Axes ---
+axes.titlesize: 12
+axes.titleweight: bold
+axes.labelsize: 11
+axes.labelweight: normal
+axes.linewidth: 1.0
+axes.edgecolor: 333333
+axes.facecolor: white
+axes.grid: True
+axes.axisbelow: True        # Grid behind data
+axes.spines.top: False
+axes.spines.right: False
+
+# --- Grid ---
+grid.color: E5E5E5
+grid.linestyle: -
+grid.linewidth: 0.8
+grid.alpha: 0.8
+
+# --- Cycler (Colors) ---
+# Okabe-Ito Palette: Orange, Sky Blue, Bluish Green, Yellow, Blue, Vermilion, Reddish Purple
+axes.prop_cycle: cycler('color', ['E69F00', '56B4E9', '009E73', 'F0E442', '0072B2', 'D55E00', 'CC79A7'])
+
+# --- Lines & Markers ---
+lines.linewidth: 2.0
+lines.markersize: 6
+lines.markeredgewidth: 0.0
+
+# --- Legend ---
+legend.frameon: False
+legend.fontsize: 10
+legend.loc: best
+legend.borderpad: 0.4
+legend.labelspacing: 0.5
+legend.handlelength: 1.5
+
+# --- Saving ---
+savefig.dpi: 300
+savefig.bbox: tight
+savefig.pad_inches: 0.1
+savefig.format: pdf         # Vector graphics by default

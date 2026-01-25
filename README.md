@@ -6,6 +6,7 @@ A comprehensive AI skill for Mathematical Contest in Modeling (MCM) and Interdis
 
 - **Problem Analysis**: Identify problem type (A-F), extract requirements, recommend models
 - **Model Library**: 50+ models with usage guidance from O-award papers
+- **Visualization Engine**: Publication-quality matplotlib templates (A-F specific) based on O-award styles
 - **Paper Writing**: O-award structure templates with human-like writing style
 - **Anti-AI Patterns**: Guidelines to make AI-assisted writing appear more natural
 - **Format Checking**: Automated compliance verification (25-page limit, headers, etc.)
@@ -56,7 +57,13 @@ mcm-analysis/
 │   ├── paper-structure.md            # O-award paper structure
 │   ├── writing-guide.md              # Academic writing guide
 │   ├── anti-ai-patterns.md           # Human writing patterns
+│   ├── visualization-guide.md        # Chart selection & design guide
 │   └── judging-criteria.md           # COMAP judging standards
+├── templates/
+│   └── visualization/                # Plotting templates & styles
+│       ├── mcm_style.mplstyle        # Publication style preset
+│       ├── style_config.py           # Color palettes & helpers
+│       └── plot_templates/           # Core chart templates (time_series, etc.)
 └── scripts/
     ├── init_project.py               # Project initializer with LaTeX
     ├── generate_outline.py           # Outline generator
