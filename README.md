@@ -1,4 +1,4 @@
-# MCM-Analysis Skill
+# MCM-Analysis Skill (v1.1.0)
 
 A comprehensive AI skill for Mathematical Contest in Modeling (MCM) and Interdisciplinary Contest in Modeling (ICM) teams. Designed to help beginner teams produce O-award quality papers.
 
