@@ -26,14 +26,14 @@ try:
     release_payload = {
         "owner": "chenqiyukkk",
         "repo": "mcm-analysis",
-        "tag_name": "v1.1.0",
-        "name": "v1.1.0 - O-Award Visualization Engine",
-        "body": "## Major Update: Visualization Engine & O-Award Analysis\n\nThis release introduces a comprehensive visualization system based on the analysis of 30 Outstanding Winner (O-Award) papers from 2020-2024.\n\n### New Features\n\n#### 1. Visualization Templates (`templates/visualization/`)\n- **Professional Style**: `mcm_style.mplstyle` for publication-quality matplotlib figures (Okabe-Ito color palette, 300 DPI).\n- **Core Plot Templates**:\n  - `phase_portrait.py`: Phase plane analysis for ODEs (Type A).\n  - `time_series.py`: Forecasts with confidence intervals (Type A/C).\n  - `network_graph.py`: Topology and hierarchy visualizations (Type B/D/F).\n  - `heatmap.py`: Correlation matrices and spatial heatmaps (Type C/E).\n  - `multi_panel.py`: Automated (a)(b) subplot layouts.\n\n#### 2. Deep Analysis Reports (`references/analysis_data/`)\n- Detailed visualization analysis for **Problem Types A through F**.\n- `visualization_findings.md`: Summary of 'Golden Rules' for MCM figures.\n- Extracted from 30+ actual O-award papers.\n\n#### 3. Documentation\n- `visualization-guide.md`: Guide on selecting the right chart for your problem type.\n- Updated `SKILL.md` with a new **Visualization Phase** in the workflow.",
+        "tag_name": "v1.1.1",
+        "name": "v1.1.1 - Self-Evolution & New Models",
+        "body": "## Feature Update: Self-Evolution Mechanism\n\nThis release introduces the **Self-Evolution Mode**, allowing the skill to autonomously learn and update its knowledge base from user interactions.\n\n### New Features\n\n#### 1. Self-Evolution (`scripts/auto_evolve.py`)\n- **Autonomous Learning**: Automatically extracts new models and insights from sessions.\n- **Self-Update**: Commits and pushes new knowledge to the repository.\n\n#### 2. Model Library Expansion (`references/models-library.md`)\n- Added **10+ new models** derived from 2022-2023 O-Award papers.\n- Updated usage guidance for modern competition trends.\n\n### Improvements\n- Fixed version synchronization issues.\n- Enhanced documentation for the evolution workflow.",
         "draft": False,
         "prerelease": False
     }
     
-    print("\n🚀 Creating Release v1.1.0...")
+    print("\n🚀 Creating Release v1.1.1...")
     
     # Execute Action using string ID
     response = toolset.execute_action(
