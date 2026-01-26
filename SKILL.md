@@ -241,4 +241,27 @@ This skill automatically integrates with:
 3. **Honorable Mention** - Above average, sound processes
 4. **Meritorious** - Excellent in many aspects
 5. **Finalist** - Exemplary, reached final judging round
-6. **Outstanding Winner** - Best of the best
+
+## Special Capabilities
+
+### A. Paper Ingest Mode (论文解析模式)
+
+**Trigger**: "解析这篇论文 [PDF路径]"
+
+**Workflow**:
+1.  **Extract**: Use `markitdown` or `pdf` tools to read the PDF content.
+2.  **Think**: Analyze the content against `templates/paper_analysis_template.md`.
+    -   Identify Year, Problem, Title, Type.
+    -   Decompose questions (Q1-Q4) and strategies.
+    -   Extract models, data sources, and conclusions.
+3.  **Generate**: Create a markdown file named `YYYY-Type-paper-XX.md`.
+4.  **Save**: Write the file to `D:/ICM/解析结果/papers/` (or user specified path).
+
+### B. Self-Evolution Mode (自我进化模式)
+
+**Trigger**: "收工" / "进化" / "提交更新"
+
+**Workflow**:
+1.  **Summarize**: Review the current session for new insights (new models, better prompts, code snippets).
+2.  **Persist**: (Optional) Update `references/models-library.md` if new models were discovered.
+3.  **Push**: Execute `python scripts/auto_evolve.py` to commit and push changes to GitHub.

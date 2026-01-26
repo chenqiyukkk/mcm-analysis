@@ -646,16 +646,60 @@ A comprehensive reference of mathematical models used in O-award winning papers 
 
 ---
 
+## 13. Advanced & Hybrid Models (2022-2024 Insights)
+
+### 13.1 Meta-Network & Stochastic Petri Nets (SPN)
+- **When to use**: Complex system modeling, process optimization, data governance
+- **Problem types**: D, E
+- **Example applications**:
+  - Port logistics data governance maturity assessment (2022-D)
+- **Key considerations**:
+  - Model "People-Technology-Process-Data" interactions as nodes and links
+  - Use SPN for dynamic simulation of time delays and bottlenecks
+  - MNA-PCA for maturity assessment indicators
+
+### 13.2 Evolutionary Game Theory
+- **When to use**: Policy analysis, international conflict resolution, multi-agent strategy
+- **Problem types**: F, E
+- **Example applications**:
+  - Global adoption of Green GDP (GGDP) standards (2023-F)
+  - Resource allocation disputes
+- **Key considerations**:
+  - Define payoff matrices for different strategies (e.g., Support vs. Oppose)
+  - Analyze stable equilibrium points (ESS)
+  - Consider dynamic factors like international pressure or subsidies
+
+### 13.3 Independent Private Value (IPV) Auction Model
+- **When to use**: Resource allocation under scarcity, fair distribution mechanisms
+- **Problem types**: B, D
+- **Example applications**:
+  - Water resource allocation for Colorado River (2022-B)
+- **Key considerations**:
+  - Treats resource allocation as a bidding process
+  - Uses Bayesian Nash Equilibrium to find optimal strategies
+  - Ensures Pareto Optimality in resource distribution
+
+### 13.4 Crime Economics (Time Allocation Model)
+- **When to use**: Social policy impact, illegal activity analysis
+- **Problem types**: F
+- **Example applications**:
+  - Environmental refugee relocation policy (2020-F)
+- **Key considerations**:
+  - Utility maximization function: Time in legal vs. illegal activities
+  - Impact of social welfare and penalties on decision making
+
+---
+
 ## Quick Reference: Models by Problem Type
 
 | Problem Type | Top Models |
 |--------------|------------|
-| **A (Continuous)** | Lotka-Volterra, Differential Equations, Monte Carlo, Cellular Automaton, Simulated Annealing |
-| **B (Discrete)** | MCLP, Genetic Algorithm, Queuing Theory, Bayesian Search, Multi-objective Programming |
-| **C (Data Insights)** | Random Forest, CNN, GRU/LSTM, Sentiment Analysis, K-Means, Time Series (ARIMA/Prophet) |
-| **D (Networks/OR)** | PageRank, Network Flow, NSGA-II, System Dynamics, Correlation Networks |
+| **A (Continuous)** | Lotka-Volterra, Differential Equations, Monte Carlo, Cellular Automaton, Simulated Annealing, W' Balance Model |
+| **B (Discrete)** | MCLP, Genetic Algorithm, Queuing Theory, Bayesian Search, Multi-objective Programming, IPV Auction |
+| **C (Data Insights)** | Random Forest, CNN, GRU/LSTM, Sentiment Analysis, K-Means, Time Series (ARIMA/Prophet/X-Prophet) |
+| **D (Networks/OR)** | PageRank, Network Flow, NSGA-II, System Dynamics, Correlation Networks, Meta-Network+SPN |
 | **E (Sustainability)** | AHP-EWM, TOPSIS, Coupling Coordination, GE Matrix, Risk Models (CAPM, EAL) |
-| **F (Policy)** | Entropy Weight Method, Fuzzy Evaluation, LFA/RBM, Game Theory, Lotka-Volterra (cultural) |
+| **F (Policy)** | Entropy Weight Method, Fuzzy Evaluation, LFA/RBM, Game Theory, Lotka-Volterra (cultural), PVAR |
 
 ---
 
@@ -690,7 +734,8 @@ DYNAMIC SYSTEMS?
 NETWORKS?
 ├─ Node importance → PageRank, Centrality
 ├─ Local patterns → Network Motifs
-└─ Resource flow → Network Flow Model
+├─ Resource flow → Network Flow Model
+└─ System Structure & Process → Meta-Network + SPN
 
 UNCERTAINTY?
 ├─ Parameter uncertainty → Monte Carlo
