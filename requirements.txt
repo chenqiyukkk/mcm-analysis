@@ -1,0 +1,10 @@
+# MCM-Analysis Dependencies
+# Python 3.8+
+# Install: pip install -r requirements.txt
+
+# Core - Visualization
+matplotlib>=3.7.0
+numpy>=1.24.0
+
+# Core - PDF Processing
+pypdf>=3.0.0
