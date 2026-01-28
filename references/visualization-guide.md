@@ -2,7 +2,7 @@
 
 A comprehensive guide to selecting and designing O-award quality figures for MCM/ICM competitions.
 
-**Version**: 1.2.0 | **Updated**: January 2026
+**Version**: 1.2.1 | **Updated**: January 2026
 
 ---
 

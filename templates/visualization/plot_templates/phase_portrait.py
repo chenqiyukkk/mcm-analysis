@@ -11,22 +11,23 @@ Includes support for:
 
 import matplotlib.pyplot as plt
 import numpy as np
-from ..style_config import use_mcm_style, COLORS, DIMENSIONS
+from typing import Callable, Tuple, Optional, List
+from ..style_config import use_mcm_style, COLORS, DIMENSIONS, save_figure
 
 def plot_phase_portrait(
-    dxdt_func,
-    dydt_func,
-    x_range,
-    y_range,
-    args=(),
-    density=1.5,
-    title="Phase Portrait",
-    xlabel="State Variable X",
-    ylabel="State Variable Y",
-    nullclines=True,
-    trajectories=None,
-    save_path=None
-):
+    dxdt_func: Callable,
+    dydt_func: Callable,
+    x_range: Tuple[float, float],
+    y_range: Tuple[float, float],
+    args: Tuple = (),
+    density: float = 1.5,
+    title: str = "Phase Portrait",
+    xlabel: str = "State Variable X",
+    ylabel: str = "State Variable Y",
+    nullclines: bool = True,
+    trajectories: Optional[List[Tuple[float, float]]] = None,
+    save_path: Optional[str] = None
+) -> Tuple[plt.Figure, plt.Axes]:
     """
     Generates a professional phase portrait for a 2D system.
     
@@ -103,6 +104,6 @@ def plot_phase_portrait(
     ax.set_ylim(y_range)
     
     if save_path:
-        plt.savefig(save_path)
+        save_figure(fig, save_path)
         
     return fig, ax

@@ -263,4 +263,4 @@ mcm-analysis/
 6. **Version Control**: Use `python scripts/auto_evolve.py` to commit changes after session.
 
 ---
-*MCM-Analysis Skill v1.2.0 - Agent Guidelines*
+*MCM-Analysis Skill v1.2.1 - Agent Guidelines*

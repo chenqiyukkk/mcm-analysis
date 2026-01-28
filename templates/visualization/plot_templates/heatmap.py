@@ -9,15 +9,16 @@ Includes support for:
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-from ..style_config import use_mcm_style, COLORS, DIMENSIONS
+from typing import Optional, Tuple, Union, List
+from ..style_config import use_mcm_style, COLORS, DIMENSIONS, save_figure
 
 def plot_correlation_matrix(
     data,
-    features=None,
-    title="Correlation Matrix",
-    cmap="RdBu_r",
-    save_path=None
-):
+    features: Optional[List[str]] = None,
+    title: str = "Correlation Matrix",
+    cmap: str = "RdBu_r",
+    save_path: Optional[str] = None
+) -> Tuple[plt.Figure, plt.Axes]:
     """
     Generates a professional correlation matrix heatmap.
     
@@ -59,19 +60,18 @@ def plot_correlation_matrix(
     ax.set_title(title)
     
     if save_path:
-        plt.savefig(save_path)
-        print(f"Figure saved to {save_path}")
+        save_figure(fig, save_path)
         
     return fig, ax
 
 def plot_confusion_matrix(
-    cm,
-    classes,
-    title='Confusion Matrix',
-    cmap='Blues',
-    normalize=False,
-    save_path=None
-):
+    cm: np.ndarray,
+    classes: List[str],
+    title: str = 'Confusion Matrix',
+    cmap: str = 'Blues',
+    normalize: bool = False,
+    save_path: Optional[str] = None
+) -> Tuple[plt.Figure, plt.Axes]:
     """
     Generates a confusion matrix for classification results.
     """
@@ -109,18 +109,18 @@ def plot_confusion_matrix(
                     color="white" if cm[i, j] > thresh else "black")
     
     if save_path:
-        plt.savefig(save_path)
+        save_figure(fig, save_path)
     
     return fig, ax
 
 def plot_spatial_heatmap(
-    data_grid,
-    xlabel="X Coordinate",
-    ylabel="Y Coordinate",
-    title="Spatial Distribution",
-    cmap="viridis",
-    save_path=None
-):
+    data_grid: np.ndarray,
+    xlabel: str = "X Coordinate",
+    ylabel: str = "Y Coordinate",
+    title: str = "Spatial Distribution",
+    cmap: str = "viridis",
+    save_path: Optional[str] = None
+) -> Tuple[plt.Figure, plt.Axes]:
     """
     Generates a spatial heatmap (e.g., for Type A physics or Type E environment).
     """
@@ -139,6 +139,6 @@ def plot_spatial_heatmap(
     ax.grid(False)
     
     if save_path:
-        plt.savefig(save_path)
+        save_figure(fig, save_path)
         
     return fig, ax

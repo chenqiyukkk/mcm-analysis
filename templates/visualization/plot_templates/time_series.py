@@ -9,22 +9,22 @@ Includes support for:
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
-from ..style_config import use_mcm_style, COLORS, DIMENSIONS
+from typing import Optional, Tuple, Union, List
+from ..style_config import use_mcm_style, COLORS, DIMENSIONS, save_figure
 
 def plot_forecast(
-    dates,
-    y_history,
-    y_forecast=None,
-    y_ci_lower=None,
-    y_ci_upper=None,
-    title="Time Series Forecast",
-    xlabel="Time",
-    ylabel="Value",
-    label_history="Historical Data",
-    label_forecast="Forecast",
-    save_path=None
-):
+    dates: Union[List, np.ndarray],
+    y_history: Union[List, np.ndarray],
+    y_forecast: Optional[Union[List, np.ndarray]] = None,
+    y_ci_lower: Optional[Union[List, np.ndarray]] = None,
+    y_ci_upper: Optional[Union[List, np.ndarray]] = None,
+    title: str = "Time Series Forecast",
+    xlabel: str = "Time",
+    ylabel: str = "Value",
+    label_history: str = "Historical Data",
+    label_forecast: str = "Forecast",
+    save_path: Optional[str] = None
+) -> Tuple[plt.Figure, plt.Axes]:
     """
     Generates a standard MCM forecast plot with confidence intervals.
     
@@ -73,23 +73,22 @@ def plot_forecast(
     ax.legend()
     
     if save_path:
-        plt.savefig(save_path)
-        print(f"Figure saved to {save_path}")
+        save_figure(fig, save_path)
         
     return fig, ax
 
 def plot_dual_axis(
-    x,
-    y1,
-    y2,
-    label1="Metric 1",
-    label2="Metric 2",
-    title="Dual Axis Analysis",
-    xlabel="Time",
-    ylabel1="Value 1",
-    ylabel2="Value 2",
-    save_path=None
-):
+    x: Union[List, np.ndarray],
+    y1: Union[List, np.ndarray],
+    y2: Union[List, np.ndarray],
+    label1: str = "Metric 1",
+    label2: str = "Metric 2",
+    title: str = "Dual Axis Analysis",
+    xlabel: str = "Time",
+    ylabel1: str = "Value 1",
+    ylabel2: str = "Value 2",
+    save_path: Optional[str] = None
+) -> Tuple[plt.Figure, Tuple[plt.Axes, plt.Axes]]:
     """
     Generates a dual-axis time series plot.
     Useful for showing correlation between two scales (e.g., Price vs Volume).
@@ -119,7 +118,6 @@ def plot_dual_axis(
     ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper left')
     
     if save_path:
-        plt.savefig(save_path)
-        print(f"Figure saved to {save_path}")
+        save_figure(fig, save_path)
         
     return fig, (ax1, ax2)

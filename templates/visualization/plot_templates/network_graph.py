@@ -9,19 +9,20 @@ Includes support for:
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
-from ..style_config import use_mcm_style, COLORS, DIMENSIONS
+from typing import Optional, Tuple, Dict, List, Union
+from ..style_config import use_mcm_style, COLORS, DIMENSIONS, save_figure
 
 def plot_network_topology(
-    G,
-    pos=None,
-    node_color=None,
-    node_size=None,
-    edge_width=1.0,
-    with_labels=True,
-    title="Network Topology",
-    layout_algorithm="spring",
-    save_path=None
-):
+    G: nx.Graph,
+    pos: Optional[Dict] = None,
+    node_color: Optional[Union[str, List]] = None,
+    node_size: Optional[Union[int, List]] = None,
+    edge_width: float = 1.0,
+    with_labels: bool = True,
+    title: str = "Network Topology",
+    layout_algorithm: str = "spring",
+    save_path: Optional[str] = None
+) -> Tuple[plt.Figure, plt.Axes]:
     """
     Generates a professional network visualization.
     
@@ -93,16 +94,16 @@ def plot_network_topology(
     ax.axis('off') # Turn off axis for networks
     
     if save_path:
-        plt.savefig(save_path)
+        save_figure(fig, save_path)
         
     return fig, ax
 
 def plot_tree_hierarchy(
-    G,
-    root=None,
-    title="Hierarchy Structure",
-    save_path=None
-):
+    G: nx.Graph,
+    root: Optional[str] = None,
+    title: str = "Hierarchy Structure",
+    save_path: Optional[str] = None
+) -> Tuple[plt.Figure, plt.Axes]:
     """
     Specialized layout for tree/hierarchy structures (e.g., AHP, Decision Trees).
     Requires 'pygraphviz' typically for graphviz_layout, but we'll use a custom implementation
@@ -132,6 +133,6 @@ def plot_tree_hierarchy(
     ax.set_title(title)
     
     if save_path:
-        plt.savefig(save_path)
+        save_figure(fig, save_path)
         
     return fig, ax

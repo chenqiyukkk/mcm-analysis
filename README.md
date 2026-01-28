@@ -1,4 +1,4 @@
-# MCM-Analysis Skill (v1.2.0)
+# MCM-Analysis Skill (v1.2.1)
 
 A comprehensive AI skill for Mathematical Contest in Modeling (MCM) and Interdisciplinary Contest in Modeling (ICM) teams. Designed to help beginner teams produce O-award quality papers.
 
@@ -147,6 +147,12 @@ MIT License - Feel free to use and modify.
 Issues and pull requests welcome!
 
 ## Changelog
+
+### v1.2.1 (2026-01-28)
+- Fixed security issue: removed hardcoded API key from release_script.py
+- Updated requirements.txt with missing dependencies (scipy, networkx, seaborn)
+- Fixed models module: removed false declarations of unimplemented modules
+- Unified version numbers across all files
 
 ### v1.2.0 (2026-01-27)
 - Added `pareto_frontier.py` with Pareto front, 3D scatter, parallel coordinates

@@ -8,3 +8,8 @@ numpy>=1.24.0
 
 # Core - PDF Processing
 pypdf>=3.0.0
+
+# Additional dependencies for visualization templates
+scipy>=1.10.0        # phase_portrait.py - ODE solving
+networkx>=3.0        # network_graph.py - network visualization
+seaborn>=0.12.0      # heatmap.py - statistical visualization

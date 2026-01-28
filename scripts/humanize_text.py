@@ -207,15 +207,6 @@ PHRASE_REPLACEMENTS = {
     ],
 }
 
-# Sentence starters that are overused in AI text
-OVERUSED_STARTERS = [
-    r"^This ",
-    r"^These ",
-    r"^The ",
-    r"^We ",
-    r"^It ",
-]
-
 # Check for repeated words/patterns
 REPETITION_WINDOW = 100  # characters to look back for repetition
 
