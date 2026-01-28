@@ -38,10 +38,10 @@ network_analysis : 网络分析 (D 类)
 
 Version
 -------
-v1.2.1 - January 2026
+v1.2.2 - January 2026
 """
 
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 
 # 当前仅导出版本号
 __all__ = ["__version__"]

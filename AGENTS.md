@@ -39,6 +39,18 @@ python templates/visualization/plot_templates/heatmap.py
 python templates/visualization/plot_templates/time_series.py
 ```
 
+**Run Example Demos (v1.2.2+):**
+
+```bash
+# Run all visualization demos (generates sample_outputs/)
+python examples/01_visualization_demos/demo_all_plots.py
+python examples/01_visualization_demos/demo_pareto_frontier.py
+python examples/01_visualization_demos/demo_sensitivity.py
+
+# Test humanize_text with sample file
+python scripts/humanize_text.py --input examples/02_script_usage/sample_input/sample_draft.md --analyze-only
+```
+
 **Verify Script Help (quick syntax check):**
 
 ```bash
@@ -263,4 +275,4 @@ mcm-analysis/
 6. **Version Control**: Use `python scripts/auto_evolve.py` to commit changes after session.
 
 ---
-*MCM-Analysis Skill v1.2.1 - Agent Guidelines*
+*MCM-Analysis Skill v1.2.2 - Agent Guidelines*

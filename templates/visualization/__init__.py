@@ -63,11 +63,11 @@ plot_templates.sensitivity_tornado : Sensitivity analysis
 
 Version
 -------
-v1.2.1 - January 2026
+v1.2.2 - January 2026
 """
 
 # Version
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 
 # Core exports from style_config
 from .style_config import (

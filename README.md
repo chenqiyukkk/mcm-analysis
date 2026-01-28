@@ -1,4 +1,4 @@
-# MCM-Analysis Skill (v1.2.1)
+# MCM-Analysis Skill (v1.2.2)
 
 A comprehensive AI skill for Mathematical Contest in Modeling (MCM) and Interdisciplinary Contest in Modeling (ICM) teams. Designed to help beginner teams produce O-award quality papers.
 
@@ -147,6 +147,13 @@ MIT License - Feel free to use and modify.
 Issues and pull requests welcome!
 
 ## Changelog
+
+### v1.2.2 (2026-01-29)
+- Added comprehensive `examples/` folder with 12 example files
+- Visualization demos: All 7 plot types, Pareto frontier, sensitivity analysis
+- Script usage guides: init_project, generate_outline, humanize_text
+- Problem analysis examples: Type C walkthrough, model selection guide
+- Complete workflow case study: Mini water allocation problem
 
 ### v1.2.1 (2026-01-28)
 - Fixed security issue: removed hardcoded API key from release_script.py
