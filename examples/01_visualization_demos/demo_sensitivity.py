@@ -39,7 +39,7 @@ def demo_tornado():
     use_mcm_style()
     
     # Economic model sensitivity parameters
-    parameters = [
+    param_names = [
         "Discount Rate",
         "Initial Investment",
         "Operating Cost",
@@ -53,17 +53,21 @@ def demo_tornado():
     baseline = 1500  # Baseline NPV in $1000
     
     # Impact at -20% and +20% parameter variation
-    low_values = [1250, 1320, 1380, 1420, 1450, 1480, 1485, 1490]
-    high_values = [1820, 1700, 1650, 1600, 1560, 1530, 1520, 1515]
+    low_values = np.array([1250, 1320, 1380, 1420, 1450, 1480, 1485, 1490])
+    high_values = np.array([1820, 1700, 1650, 1600, 1560, 1530, 1520, 1515])
     
+    # Use actual function signature:
+    # plot_tornado(param_names, low_values, high_values, baseline=0.0,
+    #              xlabel, title, show_values=True, sort_by_impact=True,
+    #              perturbation_label="±10%", save_path=None)
     fig, ax = plot_tornado(
-        parameters=parameters,
+        param_names=param_names,
         low_values=low_values,
         high_values=high_values,
         baseline=baseline,
         title="NPV Sensitivity Analysis (±20% Parameter Variation)",
         xlabel="Net Present Value ($1000)",
-        variation_label="±20% change"
+        perturbation_label="±20%"
     )
     
     save_figure(fig, "sensitivity_tornado", OUTPUT_DIR)
@@ -76,24 +80,43 @@ def demo_spider():
     print("Generating: Spider Plot...")
     use_mcm_style()
     
-    # Define parameter variation range
-    variation_pct = np.linspace(-30, 30, 13)  # -30% to +30%
+    # Define parameter names
+    param_names = ["Interest Rate", "Material Cost", "Labor Cost", "Demand", "Price"]
     
-    # Parameter responses (percentage change in output)
-    parameters = {
-        "Interest Rate": -0.8 * variation_pct,  # High negative sensitivity
-        "Material Cost": -0.5 * variation_pct,
-        "Labor Cost": -0.3 * variation_pct,
-        "Demand": 0.6 * variation_pct,  # Positive sensitivity
-        "Price": 0.9 * variation_pct,  # Highest positive sensitivity
-    }
+    # Baseline values for each parameter
+    baseline_params = np.array([0.05, 100, 50, 1000, 25])
+    baseline_output = 500  # Baseline profit
     
+    # Define test ranges for each parameter (80% to 120% of baseline)
+    param_values = []
+    output_values = []
+    
+    # Sensitivities (output change per unit param change)
+    sensitivities = [-0.8, -0.5, -0.3, 0.6, 0.9]
+    
+    for i, (base_val, sens) in enumerate(zip(baseline_params, sensitivities)):
+        # Test from 80% to 120% of baseline
+        test_vals = np.linspace(base_val * 0.8, base_val * 1.2, 9)
+        # Calculate output: baseline + sensitivity * (param_change_fraction * 100)
+        param_change_pct = (test_vals - base_val) / base_val * 100
+        outputs = baseline_output + sens * param_change_pct * 5  # Scale factor
+        
+        param_values.append(test_vals)
+        output_values.append(outputs)
+    
+    # Use actual function signature:
+    # plot_sensitivity_spider(param_names, param_values, output_values,
+    #                         baseline_params, baseline_output,
+    #                         xlabel, ylabel, title, save_path=None)
     fig, ax = plot_sensitivity_spider(
-        variation_range=variation_pct,
-        parameter_responses=parameters,
+        param_names=param_names,
+        param_values=param_values,
+        output_values=output_values,
+        baseline_params=baseline_params,
+        baseline_output=baseline_output,
         title="One-at-a-Time Sensitivity Analysis",
-        xlabel="Parameter Change (%)",
-        ylabel="Output Change (%)"
+        xlabel="Parameter Value (% of baseline)",
+        ylabel="Profit ($1000)"
     )
     
     save_figure(fig, "sensitivity_spider", OUTPUT_DIR)
@@ -113,16 +136,20 @@ def demo_heatmap():
     # Create output matrix (NPV in $M)
     IR, DG = np.meshgrid(interest_rates, demand_growth)
     # NPV decreases with interest rate, increases with demand
-    NPV = 10 - 50 * IR + 30 * DG + 5 * np.random.randn(*IR.shape) * 0.1
+    np.random.seed(42)
+    NPV = 10 - 50 * IR + 30 * DG + 0.5 * np.random.randn(*IR.shape)
     
+    # Use actual function signature:
+    # plot_sensitivity_heatmap(param1_name, param2_name, param1_values, param2_values,
+    #                          output_matrix, title, output_label, save_path=None)
     fig, ax = plot_sensitivity_heatmap(
-        x_values=interest_rates * 100,  # Convert to percentage
-        y_values=demand_growth * 100,
-        z_values=NPV,
-        xlabel="Interest Rate (%)",
-        ylabel="Demand Growth (%)",
+        param1_name="Interest Rate (%)",
+        param2_name="Demand Growth (%)",
+        param1_values=interest_rates * 100,  # Convert to percentage
+        param2_values=demand_growth * 100,
+        output_matrix=NPV,
         title="NPV Response to Parameter Combinations",
-        colorbar_label="NPV ($M)"
+        output_label="NPV ($M)"
     )
     
     save_figure(fig, "sensitivity_heatmap", OUTPUT_DIR)
@@ -134,21 +161,28 @@ def demo_summary_table():
     """Generate markdown summary table."""
     print("Generating: Summary Table...")
     
-    parameters = ["Interest Rate", "Material Cost", "Labor Cost", "Demand", "Price"]
-    baseline_values = [0.05, 100, 50, 1000, 25]
-    sensitivities = [-0.8, -0.5, -0.3, 0.6, 0.9]
+    param_names = ["Interest Rate", "Material Cost", "Labor Cost", "Demand", "Price"]
+    baseline = 1500
     
+    # Low and high output values when parameters varied ±10%
+    low_values = np.array([1380, 1420, 1450, 1550, 1620])
+    high_values = np.array([1620, 1580, 1550, 1450, 1380])
+    
+    # Use actual function signature:
+    # create_sensitivity_summary_table(param_names, low_values, high_values,
+    #                                   baseline, perturbation="±10%")
     table = create_sensitivity_summary_table(
-        parameters=parameters,
-        baseline_values=baseline_values,
-        sensitivities=sensitivities,
-        units=["fraction", "$", "$", "units", "$"]
+        param_names=param_names,
+        low_values=low_values,
+        high_values=high_values,
+        baseline=baseline,
+        perturbation="±10%"
     )
     
     # Save as markdown file
     table_path = OUTPUT_DIR / "sensitivity_summary_table.md"
     table_path.write_text(table, encoding="utf-8")
-    print(f"  Saved: {table_path}")
+    print(f"  Saved: {table_path.name}")
 
 
 def main():

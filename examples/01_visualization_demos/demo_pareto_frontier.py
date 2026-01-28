@@ -47,14 +47,21 @@ def demo_2d_pareto():
     time = 300 / cost + np.random.randn(n) * 3
     time = np.clip(time, 1, 10)
     
+    # Use actual function signature:
+    # plot_pareto_frontier(x, y, pareto_mask=None, minimize_x=True, minimize_y=True,
+    #                      xlabel, ylabel, title, show_ideal=True, show_nadir=True,
+    #                      connect_pareto=True, labels=None, highlight_indices=None, save_path=None)
     fig, ax = plot_pareto_frontier(
         x=cost,
         y=time,
         xlabel="Cost ($)",
         ylabel="Delivery Time (days)",
         title="Supply Chain Optimization: Cost vs Time",
-        highlight_pareto=True,
-        annotate_optimal=True
+        minimize_x=True,
+        minimize_y=True,
+        show_ideal=True,
+        show_nadir=True,
+        connect_pareto=True
     )
     
     save_figure(fig, "pareto_2d_cost_time", OUTPUT_DIR)
@@ -78,6 +85,8 @@ def demo_3d_pareto():
     risk = np.clip(risk, 5, 60)
     time = np.clip(time, 5, 30)
     
+    # Use actual function signature:
+    # plot_pareto_3d(x, y, z, title, xlabel, ylabel, zlabel, save_path=None)
     fig, ax = plot_pareto_3d(
         x=cost,
         y=risk,
@@ -85,8 +94,7 @@ def demo_3d_pareto():
         xlabel="Cost ($1000)",
         ylabel="Risk Score",
         zlabel="Time (weeks)",
-        title="3-Objective Optimization",
-        highlight_pareto=True
+        title="3-Objective Optimization"
     )
     
     save_figure(fig, "pareto_3d_scatter", OUTPUT_DIR)
@@ -109,17 +117,21 @@ def demo_parallel_coordinates():
     data[:, 2] = data[:, 0] * 0.5 + np.random.randn(n) * 0.1  # Correlated
     data = np.clip(data, 0, 1)
     
-    # Identify Pareto front (minimize all)
-    pareto_mask = identify_pareto_front(data, minimize=True)
+    # Note: identify_pareto_front only works for 2D, so we manually create a mask
+    # For demo purposes, mark top 20% performers (lowest sum across all objectives) as Pareto
+    total_scores = data.sum(axis=1)
+    threshold = np.percentile(total_scores, 20)
+    pareto_mask = total_scores <= threshold
     
-    labels = ["Cost", "Quality", "Speed", "Safety", "Sustainability"]
+    objective_names = ["Cost", "Quality", "Speed", "Safety", "Sustainability"]
     
+    # Use actual function signature:
+    # plot_parallel_coordinates(data, objective_names, pareto_mask=None, title, save_path=None)
     fig, ax = plot_parallel_coordinates(
         data=data,
-        labels=labels,
+        objective_names=objective_names,
         pareto_mask=pareto_mask,
-        title="Multi-Objective Comparison",
-        normalize=True
+        title="Multi-Objective Comparison"
     )
     
     save_figure(fig, "pareto_parallel_coords", OUTPUT_DIR)

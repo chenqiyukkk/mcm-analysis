@@ -21,6 +21,7 @@ skill_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(skill_root))
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Import MCM visualization tools
 from templates.visualization import (
@@ -41,20 +42,15 @@ from templates.visualization.plot_templates import (
     plot_confusion_matrix,
     # Multi-panel
     create_grid_layout,
-    create_asymmetric_layout,
     # Phase portrait
     plot_phase_portrait,
     # Network
     plot_network_topology,
     # Pareto
     plot_pareto_frontier,
-    plot_parallel_coordinates,
     # Sensitivity
     plot_tornado,
-    plot_sensitivity_spider,
 )
-
-import matplotlib.pyplot as plt
 
 # Output directory
 OUTPUT_DIR = Path(__file__).parent / "sample_outputs"
@@ -72,25 +68,26 @@ def demo_time_series():
     n_historical = 50
     n_forecast = 20
     
-    time_hist = np.arange(n_historical)
-    values_hist = 100 + np.cumsum(np.random.randn(n_historical) * 2)
+    # Create full date range
+    dates = np.arange(n_historical + n_forecast)
     
-    time_fc = np.arange(n_historical, n_historical + n_forecast)
-    values_fc = values_hist[-1] + np.cumsum(np.random.randn(n_forecast) * 2)
-    ci_lower = values_fc - np.linspace(5, 15, n_forecast)
-    ci_upper = values_fc + np.linspace(5, 15, n_forecast)
+    # Historical data
+    y_history = 100 + np.cumsum(np.random.randn(n_historical) * 2)
+    
+    # Forecast data
+    y_forecast = np.cumsum(np.random.randn(n_forecast) * 2)
+    y_ci_lower = y_forecast - np.linspace(5, 15, n_forecast)
+    y_ci_upper = y_forecast + np.linspace(5, 15, n_forecast)
     
     fig, ax = plot_forecast(
-        time_historical=time_hist,
-        values_historical=values_hist,
-        time_forecast=time_fc,
-        values_forecast=values_fc,
-        ci_lower=ci_lower,
-        ci_upper=ci_upper,
+        dates=dates,
+        y_history=y_history,
+        y_forecast=y_forecast,
+        y_ci_lower=y_ci_lower,
+        y_ci_upper=y_ci_upper,
         title="Stock Price Prediction",
         xlabel="Trading Days",
-        ylabel="Price ($)",
-        ci_label="95% Confidence Interval"
+        ylabel="Price ($)"
     )
     
     save_figure(fig, "01_time_series_forecast", OUTPUT_DIR)
@@ -116,10 +113,9 @@ def demo_heatmap():
     labels = [f"Var_{i+1}" for i in range(n_vars)]
     
     fig, ax = plot_correlation_matrix(
-        corr_matrix,
-        labels=labels,
-        title="Variable Correlation Analysis",
-        annotate=True
+        data=corr_matrix,
+        features=labels,
+        title="Variable Correlation Analysis"
     )
     
     save_figure(fig, "02_correlation_heatmap", OUTPUT_DIR)
@@ -134,13 +130,19 @@ def demo_phase_portrait():
     use_mcm_style()
     
     # Lotka-Volterra predator-prey model
-    def prey_predator(X, Y, alpha=1.1, beta=0.4, delta=0.1, gamma=0.4):
-        dX = alpha * X - beta * X * Y
-        dY = delta * X * Y - gamma * Y
-        return dX, dY
+    # dx/dt = alpha*x - beta*x*y
+    # dy/dt = delta*x*y - gamma*y
+    alpha, beta, delta, gamma = 1.1, 0.4, 0.1, 0.4
+    
+    def dxdt(x, y):
+        return alpha * x - beta * x * y
+    
+    def dydt(x, y):
+        return delta * x * y - gamma * y
     
     fig, ax = plot_phase_portrait(
-        derivative_func=prey_predator,
+        dxdt_func=dxdt,
+        dydt_func=dydt,
         x_range=(0, 5),
         y_range=(0, 5),
         title="Predator-Prey Dynamics",
@@ -166,11 +168,9 @@ def demo_network():
     G = nx.karate_club_graph()
     
     fig, ax = plot_network_topology(
-        G,
+        G=G,
         title="Social Network Structure",
-        node_color_attr=None,
-        node_size_attr=None,
-        layout='spring'
+        layout_algorithm='spring'
     )
     
     save_figure(fig, "04_network_graph", OUTPUT_DIR)
@@ -200,8 +200,8 @@ def demo_pareto():
         xlabel="Cost ($1000)",
         ylabel="Risk Score",
         title="Cost vs Risk Trade-off Analysis",
-        highlight_pareto=True,
-        annotate_optimal=True
+        minimize_x=True,
+        minimize_y=True
     )
     
     save_figure(fig, "05_pareto_frontier", OUTPUT_DIR)
@@ -216,7 +216,7 @@ def demo_tornado():
     use_mcm_style()
     
     # Sample sensitivity data
-    parameters = [
+    param_names = [
         "Interest Rate",
         "Material Cost",
         "Labor Cost",
@@ -226,17 +226,16 @@ def demo_tornado():
     ]
     
     baseline = 100  # Baseline NPV
-    low_values = [85, 88, 92, 95, 97, 98]   # NPV at -10% parameter
-    high_values = [118, 115, 110, 106, 103, 102]  # NPV at +10% parameter
+    low_values = np.array([85, 88, 92, 95, 97, 98])   # NPV at -10% parameter
+    high_values = np.array([118, 115, 110, 106, 103, 102])  # NPV at +10% parameter
     
     fig, ax = plot_tornado(
-        parameters=parameters,
+        param_names=param_names,
         low_values=low_values,
         high_values=high_values,
         baseline=baseline,
         title="NPV Sensitivity Analysis",
-        xlabel="Net Present Value ($M)",
-        variation_label="Parameter variation range"
+        xlabel="Net Present Value ($M)"
     )
     
     save_figure(fig, "06_tornado_diagram", OUTPUT_DIR)
@@ -254,8 +253,7 @@ def demo_multi_panel():
     fig, axes = create_grid_layout(
         nrows=2,
         ncols=2,
-        figsize=(10, 8),
-        titles=["(a) Raw Data", "(b) Processed", "(c) Model Fit", "(d) Residuals"]
+        suptitle="Data Analysis Pipeline"
     )
     
     # Plot sample data in each panel
@@ -267,6 +265,7 @@ def demo_multi_panel():
     axes[0, 0].scatter(x, y_raw, alpha=0.5, c=COLORS['blue'], s=10)
     axes[0, 0].set_xlabel("Time")
     axes[0, 0].set_ylabel("Signal")
+    axes[0, 0].set_title("Raw Data")
     
     # Panel (b): Smoothed
     from scipy.ndimage import gaussian_filter1d
@@ -274,12 +273,14 @@ def demo_multi_panel():
     axes[0, 1].plot(x, y_smooth, color=COLORS['orange'], linewidth=2)
     axes[0, 1].set_xlabel("Time")
     axes[0, 1].set_ylabel("Smoothed Signal")
+    axes[0, 1].set_title("Processed")
     
     # Panel (c): Model fit
     axes[1, 0].scatter(x, y_raw, alpha=0.3, c=COLORS['gray'], s=10, label='Data')
     axes[1, 0].plot(x, np.sin(x), color=COLORS['vermilion'], linewidth=2, label='Model')
     axes[1, 0].set_xlabel("Time")
     axes[1, 0].set_ylabel("Signal")
+    axes[1, 0].set_title("Model Fit")
     axes[1, 0].legend()
     
     # Panel (d): Residuals
@@ -288,6 +289,7 @@ def demo_multi_panel():
     axes[1, 1].axvline(0, color='black', linestyle='--', alpha=0.5)
     axes[1, 1].set_xlabel("Residual")
     axes[1, 1].set_ylabel("Frequency")
+    axes[1, 1].set_title("Residuals")
     
     plt.tight_layout()
     save_figure(fig, "07_multi_panel", OUTPUT_DIR)
@@ -313,15 +315,18 @@ def main():
         demo_multi_panel,
     ]
     
+    success_count = 0
     for demo_func in demos:
         try:
             demo_func()
+            success_count += 1
         except Exception as e:
             print(f"  Error in {demo_func.__name__}: {e}")
     
     print()
     print("=" * 60)
-    print(f"All demos complete! Check {OUTPUT_DIR} for outputs.")
+    print(f"Completed: {success_count}/{len(demos)} demos successful")
+    print(f"Check {OUTPUT_DIR} for outputs.")
     print("=" * 60)
 
 
