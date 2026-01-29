@@ -1,0 +1,87 @@
+% ============================================================================
+% Sensitivity Analysis Section - Draft Level Template (Chinese)
+% MCM-Analysis Skill v1.3.0
+% ============================================================================
+
+\section{Sensitivity Analysis}
+
+% ============================================================================
+% 【以下为中文初稿模板，请根据具体问题修改后翻译为英文】
+% ============================================================================
+
+为验证模型的鲁棒性，我们对关键参数进行了灵敏度分析。
+
+\subsection{Parameter Sensitivity}
+
+我们选取了以下[数量]个关键参数进行灵敏度测试：
+[参数1名称]、[参数2名称]和[参数3名称]。
+对每个参数分别进行$\pm 5\%$和$\pm 10\%$的扰动，
+观察模型输出的变化情况。
+
+表~\ref{tab:sensitivity}~展示了灵敏度分析的结果。
+
+\begin{table}[H]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+\textbf{参数} & \textbf{-10\%} & \textbf{-5\%} & \textbf{基准值} & \textbf{+5\%} & \textbf{+10\%} \\
+\midrule
+参数1 & [值] & [值] & [值] & [值] & [值] \\
+参数2 & [值] & [值] & [值] & [值] & [值] \\
+参数3 & [值] & [值] & [值] & [值] & [值] \\
+\bottomrule
+\end{tabular}
+\caption{参数灵敏度分析结果}
+\label{tab:sensitivity}
+\end{table}
+
+从表中可以看出：
+\begin{itemize}
+    \item [参数1]的变化对结果影响最大，当参数增加10\%时，输出变化[百分比]。
+    \item [参数2]的影响相对较小，输出变化控制在[百分比]以内。
+    \item [参数3]对模型输出几乎没有影响，说明模型对该参数不敏感。
+\end{itemize}
+
+图~\ref{fig:sensitivity}~直观展示了参数敏感性的对比。
+
+% \begin{figure}[H]
+%     \centering
+%     % \includegraphics[width=0.8\textwidth]{figures/sensitivity_tornado.pdf}
+%     \caption{参数灵敏度龙卷风图}
+%     \label{fig:sensitivity}
+% \end{figure}
+
+\subsection{Model Validation}
+
+为进一步验证模型的有效性，我们采用了以下验证方法：
+
+\textbf{方法一：历史数据对比}
+
+我们将模型预测结果与[时间段]的历史数据进行对比。
+如图~\ref{fig:validation}~所示，模型预测值与实际值的相关系数达到[值]，
+平均绝对误差（MAE）为[值]，说明模型具有良好的预测精度。
+
+% \begin{figure}[H]
+%     \centering
+%     % \includegraphics[width=0.7\textwidth]{figures/validation.pdf}
+%     \caption{模型验证：预测值与实际值对比}
+%     \label{fig:validation}
+% \end{figure}
+
+\textbf{方法二：极端情况测试}
+
+我们测试了[极端情况1]和[极端情况2]下模型的表现。
+结果表明，在这些边界条件下，模型仍能给出合理的结果，
+没有出现数值溢出或不收敛的情况。
+
+\subsection{Robustness Conclusion}
+
+综合灵敏度分析和模型验证的结果，我们可以得出以下结论：
+
+\begin{enumerate}
+    \item 模型对大多数参数的变化具有较好的鲁棒性，
+          输出变化幅度在可接受范围内。
+    \item [参数1]是模型中最敏感的参数，在实际应用中应重点关注其取值的准确性。
+    \item 模型预测结果与历史数据吻合良好，验证了模型的有效性。
+    \item 在极端条件下，模型仍能保持稳定，具有较强的适应性。
+\end{enumerate}
