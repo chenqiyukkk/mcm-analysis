@@ -1,15 +1,27 @@
-# MCM-Analysis Skill (v1.2.2)
+# MCM-Analysis Skill v2.0
+
+> **Architecture**: LLM-Driven Workflow with External Skill Integration  
+> **Philosophy**: Scripts handle I/O, LLM handles intelligence
 
 A comprehensive AI skill for Mathematical Contest in Modeling (MCM) and Interdisciplinary Contest in Modeling (ICM) teams. Designed to help beginner teams produce O-award quality papers.
 
-## What's New in v1.2.0
+## What's New in v2.0
 
-- **Pareto Frontier Visualization**: 2D/3D Pareto fronts, parallel coordinates for multi-objective optimization
-- **Sensitivity Analysis Tools**: Tornado diagrams, spider plots, parameter impact heatmaps
-- **Enhanced Style System**: Auto subplot labels (a)(b)(c), smart legend placement, LaTeX math support
-- **Multi-format Export**: Save figures as PNG + PDF simultaneously
-- **Asymmetric Layouts**: Flexible GridSpec-based multi-panel figures
-- **Complete Documentation**: Comprehensive visualization guide with examples
+### Architecture Revolution
+
+| v1.x (Script-Driven) | v2.0 (LLM-Driven) |
+|---------------------|-------------------|
+| Heavy Python scripts (~800 lines) | Minimal scripts (~200 lines, I/O only) |
+| Regex-based parsing (fragile) | LLM semantic understanding (robust) |
+| Keywords matching (low accuracy) | Knowledge base references (high accuracy) |
+| High maintenance cost | Low maintenance, high flexibility |
+
+### Key Changes
+
+- **Removed Scripts**: `parse_problem.py`, `generate_outline.py`, `humanize_text.py` - now handled by LLM
+- **Retained Scripts**: `init_project.py`, `check_format.py`, `auto_evolve.py` (I/O only)
+- **Enhanced Knowledge Base**: 7 comprehensive reference documents in `references/`
+- **External Skill Integration**: Leverages `pdf`, `xlsx`, `docx`, `exploratory-data-analysis` skills
 
 ## Features
 
@@ -19,7 +31,6 @@ A comprehensive AI skill for Mathematical Contest in Modeling (MCM) and Interdis
 - **Paper Writing**: O-award structure templates with human-like writing style
 - **Anti-AI Patterns**: Guidelines to make AI-assisted writing appear more natural
 - **Format Checking**: Automated compliance verification (25-page limit, headers, etc.)
-- **Python Scripts**: Project initialization, outline generation, format checking
 
 ## Installation
 
@@ -33,10 +44,19 @@ Copy this folder to your OpenCode skills directory:
 ~/.claude/skills/mcm-analysis/
 ```
 
-### Dependencies (for visualization)
+### Dependencies
+
 ```bash
-pip install matplotlib numpy scipy networkx seaborn
+pip install -r requirements.txt
 ```
+
+Core dependencies:
+- `matplotlib>=3.7.0` - visualization
+- `numpy>=1.24.0` - numerical operations
+- `pypdf>=3.0.0` - PDF processing
+- `scipy>=1.10.0` - ODE solving (phase portraits)
+- `networkx>=3.0` - network visualization
+- `seaborn>=0.12.0` - statistical visualization
 
 ## Quick Start
 
@@ -45,66 +65,65 @@ pip install matplotlib numpy scipy networkx seaborn
 python scripts/init_project.py --problem C --year 2026 --team "YourTeam"
 ```
 
+### Check Paper Format
+```bash
+python scripts/check_format.py paper.pdf --verbose
+```
+
 ### Use Visualization Templates
 ```python
-from templates.visualization import use_mcm_style, COLORS
+from templates.visualization import use_mcm_style, COLORS, save_figure
+
+# Apply MCM publication style
 use_mcm_style()
 
+# Create plots using templates
 from templates.visualization.plot_templates import (
     plot_pareto_frontier,
     plot_tornado,
     create_grid_layout
 )
 
-# Create Pareto frontier
+# Example: Pareto frontier
 fig, ax = plot_pareto_frontier(cost, risk, title="Cost vs Risk Trade-off")
-
-# Create sensitivity tornado diagram
-fig, ax = plot_tornado(params, low_vals, high_vals, baseline=100)
-```
-
-### Generate Paper Outline
-```bash
-python scripts/generate_outline.py --problem-type C
-```
-
-### Humanize AI-Generated Text
-```bash
-python scripts/humanize_text.py --input draft.md --output humanized.md
+save_figure(fig, "pareto_plot")
 ```
 
 ## File Structure
 
 ```
 mcm-analysis/
-├── SKILL.md                          # Main skill instructions
-├── references/
+├── SKILL.md                          # Main skill workflow definitions
+├── AGENTS.md                         # Agent operational protocol
+│
+├── references/                       # Knowledge Base (Core!)
 │   ├── models-library.md             # 50+ models categorized
 │   ├── problem-types.md              # A-F problem type patterns
 │   ├── paper-structure.md            # O-award paper structure
 │   ├── writing-guide.md              # Academic writing guide
 │   ├── anti-ai-patterns.md           # Human writing patterns
-│   ├── visualization-guide.md        # Complete visualization API docs
+│   ├── visualization-guide.md        # Complete visualization API
 │   └── judging-criteria.md           # COMAP judging standards
+│
 ├── templates/
-│   └── visualization/
-│       ├── __init__.py               # Package exports
-│       ├── mcm_style.mplstyle        # Publication style preset
-│       ├── style_config.py           # Colors, dimensions, utilities
-│       └── plot_templates/
-│           ├── __init__.py           # Template exports
-│           ├── time_series.py        # Forecasts with confidence intervals
-│           ├── heatmap.py            # Correlation/confusion matrices
-│           ├── phase_portrait.py     # Dynamic systems (Type A)
-│           ├── network_graph.py      # Networks & hierarchies
-│           ├── multi_panel.py        # Multi-subplot layouts
-│           ├── pareto_frontier.py    # Multi-objective optimization (NEW)
-│           └── sensitivity_tornado.py # Sensitivity analysis (NEW)
-└── scripts/
-    ├── init_project.py               # Project initializer with LaTeX
-    ├── generate_outline.py           # Outline generator
-    ├── check_format.py               # Format compliance checker
-    └── humanize_text.py              # AI pattern reducer
+│   ├── visualization/                # 7 plot templates
+│   │   ├── style_config.py           # Colors, dimensions, utilities
+│   │   ├── mcm_style.mplstyle        # Publication style preset
+│   │   └── plot_templates/           # Individual plot types
+│   └── latex/                        # LaTeX templates
+│       ├── preamble.tex
+│       └── sections/
+│
+├── scripts/                          # Minimal I/O scripts
+│   ├── init_project.py               # Project scaffolding
+│   ├── check_format.py               # PDF format verification
+│   └── auto_evolve.py                # Git commit/push
+│
+└── examples/                         # 12 example files
+    ├── 01_visualization_demos/       # All 7 plot types
+    ├── 03_paper_skeleton/            # LaTeX examples
+    ├── 03_problem_analysis/          # Analysis examples
+    └── 04_complete_workflow/         # End-to-end case study
 ```
 
 ## Visualization Templates
@@ -119,13 +138,18 @@ mcm-analysis/
 | `pareto_frontier.py` | Type B, D, E | `plot_pareto_frontier()`, `plot_parallel_coordinates()` |
 | `sensitivity_tornado.py` | All types | `plot_tornado()`, `plot_sensitivity_heatmap()` |
 
-## Key Design Decisions
+## External Skill Dependencies
 
-1. **Output Language**: Generated content is in **Chinese** for team review; translation handled separately
-2. **Anti-AI Writing**: Built-in patterns to avoid detectable AI writing styles
-3. **Based on Real Data**: Patterns extracted from 60+ O-award papers (2020-2024)
-4. **Colorblind Safe**: All visualizations use Okabe-Ito palette
-5. **Beginner Friendly**: Complete templates, scripts, and checklists
+v2.0 integrates with external skills for specific tasks:
+
+| External Skill | Purpose | When to Use |
+|----------------|---------|-------------|
+| `pdf` | Extract text from PDF files | User provides problem PDF |
+| `markitdown` | Convert documents to Markdown | Alternative PDF extraction |
+| `xlsx` | Read and analyze Excel data | Problem includes data files |
+| `docx` | Generate Word documents | Create memos, letters |
+| `exploratory-data-analysis` | Automatic EDA reports | Analyze provided datasets |
+| `scientific-visualization` | Generate publication figures | Create charts and plots |
 
 ## Problem Types Reference
 
@@ -138,6 +162,36 @@ mcm-analysis/
 | E | Sustainability | Environment, ecology | Spatial heatmaps, sensitivity |
 | F | Policy | Social systems, policy modeling | Networks, tornado diagrams |
 
+## Key Design Decisions
+
+1. **LLM-Driven**: Intelligence in LLM, scripts for I/O only
+2. **Output Language**: Generated content in **Chinese** for team review
+3. **Anti-AI Writing**: Built-in patterns to avoid detectable AI styles
+4. **Based on Real Data**: Patterns from 60+ O-award papers (2020-2024)
+5. **Colorblind Safe**: All visualizations use Okabe-Ito palette
+
+## Changelog
+
+### v2.0.0 (2026-01-29)
+- **Architecture Revolution**: LLM-driven workflow replaces script-driven approach
+- Removed heavy scripts: `parse_problem.py`, `generate_outline.py`, `humanize_text.py`
+- Enhanced SKILL.md with 6 comprehensive workflow definitions
+- Updated AGENTS.md with v2.0 operational protocols
+- Retained minimal I/O scripts: `init_project.py`, `check_format.py`, `auto_evolve.py`
+
+### v1.2.2 (2026-01-29)
+- Added comprehensive `examples/` folder with 12 example files
+- Visualization demos, script usage guides, problem analysis examples
+
+### v1.2.1 (2026-01-28)
+- Fixed security issue: removed hardcoded API key
+- Updated requirements.txt with missing dependencies
+
+### v1.2.0 (2026-01-27)
+- Added Pareto frontier and sensitivity analysis templates
+- Enhanced style system with LaTeX support
+- Complete rewrite of visualization guide
+
 ## License
 
 MIT License - Feel free to use and modify.
@@ -145,33 +199,3 @@ MIT License - Feel free to use and modify.
 ## Contributing
 
 Issues and pull requests welcome!
-
-## Changelog
-
-### v1.2.2 (2026-01-29)
-- Added comprehensive `examples/` folder with 12 example files
-- Visualization demos: All 7 plot types, Pareto frontier, sensitivity analysis
-- Script usage guides: init_project, generate_outline, humanize_text
-- Problem analysis examples: Type C walkthrough, model selection guide
-- Complete workflow case study: Mini water allocation problem
-
-### v1.2.1 (2026-01-28)
-- Fixed security issue: removed hardcoded API key from release_script.py
-- Updated requirements.txt with missing dependencies (scipy, networkx, seaborn)
-- Fixed models module: removed false declarations of unimplemented modules
-- Unified version numbers across all files
-
-### v1.2.0 (2026-01-27)
-- Added `pareto_frontier.py` with Pareto front, 3D scatter, parallel coordinates
-- Added `sensitivity_tornado.py` with tornado diagram, spider plot, heatmap
-- Enhanced `style_config.py` with subplot labels, legend optimization, LaTeX support
-- Enhanced `multi_panel.py` with asymmetric layouts
-- Updated `mcm_style.mplstyle` with LaTeX math support and refined defaults
-- Complete rewrite of `visualization-guide.md` with API documentation
-
-### v1.1.1 (2026-01-26)
-- Added self-evolution and paper ingest modes
-- Added 10+ new models from 2022-2023 O-award papers
-
-### v1.1.0 (2026-01-26)
-- Initial public release

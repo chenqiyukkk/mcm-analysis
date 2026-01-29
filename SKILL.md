@@ -510,7 +510,377 @@ Estimate judging level:
 
 ---
 
-## Scripts (Minimal)
+## Workflow 7: Full Paper Generation Pipeline (端到端论文生成)
+
+### Trigger Conditions
+- User says: "生成论文", "写完整论文", "一键建模", "从题目到论文"
+- User provides: PDF path `[+ data file path]`
+
+### Pipeline Overview
+
+This workflow orchestrates Workflows 1-6 to generate a complete paper draft from problem PDF to LaTeX output.
+
+**Input**: Problem PDF + (optional) data files  
+**Output**: Complete LaTeX project ready for Overleaf  
+**Mode**: Step-by-step confirmation (user reviews at each phase)
+
+---
+
+### Phase 1: Project Initialization
+
+**Action**: Create project directory structure
+
+```bash
+python scripts/init_project.py --problem [X] --year [YYYY] --team [TeamName] --path [output_dir]
+```
+
+**Output**: `MCM_YYYY_X_TeamName/` directory with:
+- `paper/` - LaTeX template files
+- `code/` - Python scaffolding
+- `data/` - Data folders
+
+**User Prompt**:
+```
+📁 项目初始化完成
+已创建目录: MCM_2026_C_TeamName/
+
+请确认:
+- 题目类型: C (Data Insights)
+- 年份: 2026
+- 团队名: TeamName
+
+是否正确? (是/否/修改)
+```
+
+---
+
+### Phase 2: Problem Analysis (调用 Workflow 1)
+
+**Step 1**: Extract problem text
+```
+Call skill: pdf
+Request: Extract all text from [PDF path]
+```
+
+**Step 2**: Analyze problem (参考 Workflow 1)
+- Identify problem type (A-F)
+- Extract tasks (Q1, Q2, Q3...)
+- List data files
+- Identify constraints
+- Recommend 2-4 models
+
+**Output Format**:
+```
+## 📊 题目分析报告
+
+**年份**: 2026
+**题目类型**: C (Data Insights) - 数据洞察型
+**置信度**: High
+
+### 任务分解
+1. **Q1**: [Task description]
+2. **Q2**: [Task description]
+3. **Q3**: [Task description]
+
+### 数据文件
+- data.csv: [description]
+
+### 约束条件
+- 25页限制
+- 需要提交备忘录
+
+### 推荐模型
+1. **随机森林 (Random Forest)**
+   - 适用性: [explanation]
+   - O奖案例: 2024 Problem C
+
+2. **LSTM时间序列**
+   - 适用性: [explanation]
+   - O奖案例: 2023 Problem A
+
+⏸️ 请确认分析结果是否正确? (是/否/修改)
+```
+
+---
+
+### Phase 3: Data Exploration (可选，调用 Workflow 2)
+
+**Condition**: If data files provided
+
+**Step 1**: Load and analyze data
+```
+Call skill: xlsx (for Excel)
+Call skill: exploratory-data-analysis (for CSV)
+Request: Generate comprehensive EDA report
+```
+
+**Step 2**: Summarize findings
+- Data scale (rows, columns)
+- Key features
+- Data quality issues
+- Feature types
+- Correlations
+
+**Output Format**:
+```
+## 📈 数据探索报告
+
+**数据集**: data.csv
+**规模**: 1,000行 × 15列
+
+### 关键发现
+1. **时间范围**: 2020-2024年
+2. **主要变量**: [变量列表]
+3. **数据质量**: 缺失值占比2.3%
+4. **特征类型**: 数值型12个，类别型3个
+
+### 建模建议
+- 适合时间序列分析
+- 建议标准化处理
+- 特征X与Y高度相关(r=0.85)
+
+⏸️ 请确认数据理解是否正确? (是/否/跳过)
+```
+
+---
+
+### Phase 4: Model Selection (调用 Workflow 3)
+
+**Action**: Present recommended models from Phase 2
+
+**User Interaction**:
+```
+## 🎯 模型选择
+
+基于题目分析，推荐以下模型组合:
+
+1. **随机森林 (Random Forest)** ⭐ 推荐
+   - 用于: 特征重要性分析 + 基准预测
+   - 优势: 可解释性强，适合作为基准
+
+2. **LSTM神经网络**
+   - 用于: 时间序列预测
+   - 优势: 捕捉长期依赖关系
+
+3. **XGBoost集成学习**
+   - 用于: 最终预测优化
+   - 优势: 精度高，处理复杂模式
+
+⏸️ 请选择要使用的模型 (输入序号，如: 1,2 或 all):
+```
+
+**Output**: Selected model list → saved to `paper/models_selected.md`
+
+---
+
+### Phase 5: Paper Outline Generation
+
+**Action**: Generate complete outline based on:
+- `references/paper-structure.md`
+- Problem type and tasks
+- Selected models
+
+**Output Format**:
+```
+## 📝 论文大纲
+
+### 1. Summary (1页)
+- 问题重述
+- 方法概述
+- 主要结果
+
+### 2. Introduction (2-3页)
+- 2.1 Problem Background
+- 2.2 Restatement of Problems
+- 2.3 Our Work
+
+### 3. Assumptions and Notations (1-1.5页)
+- 3.1 Assumptions
+- 3.2 Notations
+
+### 4. Model Development (12-15页)
+- 4.1 Model I: 随机森林
+- 4.2 Model II: LSTM
+- 4.3 Model III: XGBoost
+
+### 5. Results and Analysis (4-5页)
+- 5.1 Task 1 Results
+- 5.2 Task 2 Results
+- 5.3 Task 3 Results
+
+### 6. Sensitivity Analysis (1-1.5页)
+
+### 7. Strengths and Weaknesses (0.5-1页)
+
+### 8. Conclusions (1-2页)
+
+⏸️ 大纲是否需要调整? (是/否)
+```
+
+---
+
+### Phase 6: Content Generation (调用 Workflow 4)
+
+**For each section**, generate content using:
+1. `templates/latex/sections/*_draft.tex` as base
+2. `references/anti-ai-patterns.md` for human-like writing
+3. Problem-specific context from analysis
+
+**Generation Order**:
+1. Summary
+2. Introduction
+3. Assumptions
+4. Model Development
+5. Results
+6. Sensitivity
+7. Strengths
+8. Conclusion
+
+**Progress Display**:
+```
+📝 正在生成论文内容...
+
+✅ Summary 完成 (300字)
+✅ Introduction 完成 (800字)
+✅ Assumptions 完成 (5个假设)
+✅ Model Development 完成 (3个模型)
+⏳ Results 生成中...
+```
+
+**Visualization Code Generation**:
+For each figure needed:
+```python
+# Auto-generated for: [figure description]
+from templates.visualization import use_mcm_style, save_figure
+from templates.visualization.plot_templates import plot_forecast
+
+# TODO: Replace with actual data
+fig, ax = plot_forecast(...)
+save_figure(fig, "figure_1", output_dir=Path("./figures"))
+```
+
+Save to: `code/auto_generated_figures.py`
+
+---
+
+### Phase 7: LaTeX Assembly
+
+**Action**: Assemble complete `paper/main.tex`
+
+**Structure**:
+```latex
+\documentclass[12pt]{article}
+\input{preamble}  % From templates/latex/preamble.tex
+
+\begin{document}
+
+% Summary
+\input{sections/summary}
+
+\newpage
+\setcounter{page}{1}
+
+% Main Content
+\input{sections/introduction}
+\input{sections/assumptions}
+\input{sections/model}
+\input{sections/results}
+\input{sections/sensitivity}
+\input{sections/strengths}
+\input{sections/conclusion}
+
+\bibliographystyle{plain}
+\bibliography{sections/references}
+
+\end{document}
+```
+
+**Copy Templates**:
+- Copy `templates/latex/sections/*_draft.tex` → `paper/sections/*.tex`
+- Fill in generated content
+- Add TODO markers for missing data
+
+---
+
+### Phase 8: Final Output
+
+**Generate**:
+1. Complete LaTeX project in `MCM_YYYY_X_TeamName/`
+2. `OVERLEAF_GUIDE.md` (upload instructions)
+3. `paper_progress.md` (status tracking)
+
+**Final Report**:
+```
+🎉 论文生成完成!
+
+📁 输出目录: MCM_2026_C_TeamName/
+   ├── paper/
+   │   ├── main.tex (完整论文)
+   │   ├── preamble.tex
+   │   └── sections/
+   │       ├── summary.tex
+   │       ├── introduction.tex
+   │       ├── assumptions.tex
+   │       ├── model.tex
+   │       ├── results.tex
+   │       ├── sensitivity.tex
+   │       ├── strengths.tex
+   │       └── conclusion.tex
+   ├── code/
+   │   ├── auto_generated_figures.py
+   │   └── data_preprocessing.py
+   ├── data/
+   │   ├── raw/
+   │   └── processed/
+   ├── OVERLEAF_GUIDE.md
+   └── paper_progress.md
+
+📊 生成统计:
+   - 总页数预估: 18-22页
+   - 章节数: 8个
+   - 模型数: 3个
+   - 图表占位: 6个
+
+⚠️ 注意事项:
+   1. 所有[TODO]标记需要补充实际数据
+   2. 运行 code/auto_generated_figures.py 生成图表
+   3. 按照 OVERLEAF_GUIDE.md 上传到Overleaf
+   4. 将中文翻译为英文后提交
+
+下一步: 请查看 OVERLEAF_GUIDE.md 开始上传和编译
+```
+
+---
+
+### Special Handling
+
+#### Memo/Letter Requirement
+If problem requires memo/letter:
+```
+检测到题目要求提交备忘录
+
+将在 Conclusion 后添加:
+\section*{Memorandum}
+
+请提供:
+- 收件人: [organization/person]
+- 主题: [subject]
+- 关键建议: [bullet points]
+```
+
+#### Multiple Data Files
+```
+检测到多个数据文件:
+- data1.csv
+- data2.xlsx
+- supplementary.pdf
+
+将分别分析并整合到Results章节
+```
+
+---
+
+## Reference Files
 
 | Script | Purpose |
 |--------|---------|
