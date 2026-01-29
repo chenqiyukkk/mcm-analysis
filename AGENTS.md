@@ -304,21 +304,28 @@ python scripts/generate_paper_skeleton.py -p C -y 2026 --mode draft
 
 ---
 
-### Phase 2: 题目智能解析 ⏳ PENDING
+### Phase 2: 题目智能解析 ✅ COMPLETED (v1.4.0)
 
 **目标**: 自动读取题目 PDF，提取关键信息
 
-**计划内容**:
-- [ ] 新增 `scripts/parse_problem.py` - 题目解析脚本
-- [ ] 集成用户已有的 `pdf` skill 进行 PDF 读取
-- [ ] 功能:
-  - 识别问题类型 (A-F)
-  - 提取子问题 (Q1, Q2, Q3...)
-  - 识别数据文件引用
-  - 提取关键约束条件
-- [ ] 输出: 结构化的 `problem_analysis.json`
+**实现内容**:
+- [x] 新增 `scripts/parse_problem.py` - 题目解析脚本
+- [x] 集成 `pypdf`/`pdfplumber` 进行 PDF 读取
+- [x] 功能:
+  - 识别问题类型 (A-F) - 基于关键词匹配
+  - 提取子问题 (Q1, Q2, Q3...) - 正则表达式匹配
+  - 识别数据文件引用 - 文件名模式匹配
+  - 提取关键约束条件 - 关键词识别
+- [x] 输出: 结构化 JSON + Markdown 报告
 
-**预计版本**: v1.4.0
+**验证命令**:
+```bash
+python scripts/parse_problem.py --help
+python scripts/parse_problem.py 2026_MCM_Problem_C.pdf
+python scripts/parse_problem.py problem.pdf -o ./analysis/ --format both
+```
+
+**预计版本**: v1.4.0 ✅ COMPLETED
 
 ---
 
@@ -397,7 +404,7 @@ python scripts/generate_paper_skeleton.py -p C -y 2026 --mode draft
 | Phase | 名称 | 状态 | 版本 |
 |-------|------|------|------|
 | 1 | 论文框架自动化生成 | ✅ COMPLETED | v1.3.0 |
-| 2 | 题目智能解析 | ⏳ PENDING | v1.4.0 |
+| 2 | 题目智能解析 | ✅ COMPLETED | v1.4.0 |
 | 3 | 模型代码自动生成 | ⏳ PENDING | v1.5.0 |
 | 4 | 数据处理自动化 | ⏳ PENDING | v1.6.0 |
 | 5 | 论文内容自动生成 | ⏳ PENDING | v1.7.0 |

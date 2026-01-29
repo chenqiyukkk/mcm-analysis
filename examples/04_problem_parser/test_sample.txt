@@ -1,0 +1,56 @@
+# MCM/ICM Problem Parser - Test Sample
+
+This is a simulated problem text for testing the parser functionality.
+
+## 2026 MCM Problem C: Tennis Momentum Analysis
+
+### Background
+
+In the sport of tennis, momentum plays a crucial role in match outcomes. Understanding and quantifying momentum can provide valuable insights for players, coaches, and analysts. This problem requires you to analyze match data and develop models to understand momentum dynamics.
+
+### Problem Statement
+
+**Task 1:** Develop a model to quantify momentum in tennis matches using the provided match data. Your model should capture the flow of the game and identify key turning points.
+
+**Task 2:** Use your model to predict match outcomes based on momentum shifts. Validate your predictions against historical data.
+
+**Task 3:** Analyze the relationship between momentum and player performance metrics such as serve percentage, break points, and unforced errors.
+
+### Data Description
+
+The following data files are provided for your analysis:
+
+- `match_data.csv`: Contains point-by-point data for multiple matches
+- `player_stats.xlsx`: Player statistics including serve percentages and error rates
+- `tournament_info.txt`: Information about tournament conditions and surfaces
+
+You must use all provided datasets in your analysis.
+
+### Requirements
+
+1. Your model must be validated using cross-validation techniques.
+2. You should provide confidence intervals for all predictions.
+3. The maximum length of your paper is 25 pages.
+4. You must include sensitivity analysis for key model parameters.
+
+### Assumptions
+
+- Assume that weather conditions do not significantly affect indoor matches.
+- Player fitness levels are assumed to be consistent throughout the tournament.
+- The surface type is constant for all matches in the dataset.
+
+### Constraints
+
+- You cannot use external APIs or real-time data feeds.
+- All code must be included in the appendix.
+- You must cite all references using standard academic format.
+
+---
+
+## Expected Parser Output
+
+This sample should produce:
+- Problem Type: C (Data Insights)
+- Subproblems: Q1 (momentum model), Q2 (prediction), Q3 (performance analysis)
+- Data Files: match_data.csv, player_stats.xlsx, tournament_info.txt
+- Constraints: 25 pages limit, cross-validation required, no external APIs
