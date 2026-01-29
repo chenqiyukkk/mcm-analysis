@@ -609,3 +609,19 @@ For the mandatory figures planned in Phase 2.5, generate Python code.
 ---
 
 *MCM-Analysis Skill v2.1 - Visual-First & Deep Content*
+
+---
+
+### ⚠️ Flow Integrity Check
+
+**Before claiming paper is ready, verify ALL phases are completed:**
+
+| Phase | Status Check |
+|-------|-------------|
+| Phase 1 | `paper/` directory exists |
+| Phase 2 | `paper_progress.md` shows "Problem Analysis: ✅" |
+| Phase 2.5 | At least 10 figures in `paper/figures/` |
+| Phase 6 | Each .tex file has >100 lines of actual content |
+| Phase 6.5 | Total word count >6000 |
+
+**If any check fails, the paper generation is INCOMPLETE.**

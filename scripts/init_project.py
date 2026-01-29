@@ -734,9 +734,53 @@ def copy_draft_templates(project_path: Path) -> None:
     print("=" * 50)
 
 
+def copy_deep_templates(project_path: Path) -> None:
+    """Copy Deep LaTeX templates for O-Award quality generation."""
+    print("\n" + "=" * 50)
+    print("Copying Deep Templates (O-Award Quality Mode)")
+    print("=" * 50)
+    
+    skill_root = Path(__file__).parent.parent
+    deep_source = skill_root / "templates" / "latex" / "sections_deep"
+    
+    if not deep_source.exists():
+        print(f"Warning: Deep templates not found at {deep_source}")
+        return
+    
+    sections_dir = project_path / "paper" / "sections"
+    
+    # Map deep templates to section files
+    # Note: Deep templates are richer starting points
+    template_map = {
+        "introduction_deep.tex": "introduction.tex",
+        "model_deep.tex": "model.tex",  
+        "results_deep.tex": "results.tex",
+    }
+    
+    for deep_file, target_name in template_map.items():
+        source = deep_source / deep_file
+        if source.exists():
+            target = sections_dir / target_name
+            # Overwrite existing empty template
+            target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+            print(f"  [OK] Copied: {deep_file} -> {target_name}")
+        else:
+            print(f"  Warning: {deep_file} not found")
+    
+    print("=" * 50)
+    print(">> Deep templates ready! LLM can now fill content.")
+
+
 def create_progress_tracker(project_path: Path, problem: str, year: int, team: str) -> None:
     """Create paper generation progress tracker."""
     progress_content = f"""# 论文生成进度追踪
+
+⚠️ **重要提醒**: 当前项目只是骨架！
+需要继续执行 Phase 2-7 才能生成完整论文内容。
+
+使用命令: 请调用 mcm-analysis skill 并提供题目PDF路径
+
+---
 
 ## 基本信息
 - **年份**: {year}
@@ -860,6 +904,12 @@ Examples:
         help="Copy complete LaTeX draft templates for full paper generation"
     )
     
+    parser.add_argument(
+        "--deep",
+        action="store_true",
+        help="Use Deep Templates (O-Award quality) instead of basic skeleton"
+    )
+    
     args = parser.parse_args()
     
     # Validate team name
@@ -879,7 +929,27 @@ Examples:
     # If --full-paper flag is set, copy draft templates
     if args.full_paper and project_path:
         copy_draft_templates(project_path)
+    
+    # If --deep flag is set, overwrite with deep templates
+    if args.deep and project_path:
+        copy_deep_templates(project_path)
+        
+    if (args.full_paper or args.deep) and project_path:
         create_progress_tracker(project_path, args.problem.upper(), args.year, team_clean)
+
+    if project_path:
+        print("\n" + "=" * 50)
+        print(f"[SUCCESS] Project created: {project_path.name}")
+        print(f"(!) IMPORTANT: This is only the skeleton!")
+        print(f"\n>> Next steps to generate full paper:")
+        print(f"  1. cd {project_path.name}")
+        print(f"  2. Invoke mcm-analysis skill with the problem PDF")
+        print(f"  3. Follow Workflow 7 (Full Paper Generation):")
+        print(f"     - Phase 2: Problem Analysis (pdf skill)")
+        print(f"     - Phase 2.5: Visual Planning (15+ figures)")
+        print(f"     - Phase 6: Content Generation (Deep Mode)")
+        print(f"     - Phase 6.5: Thickness Check (>6000 words)")
+        print(f"\n[REF] Reference: paper_progress.md for tracking")
 
 
 if __name__ == "__main__":
