@@ -1,26 +1,20 @@
-# MCM-Analysis AGENTS.md
+# MCM-Analysis AGENTS.md v2.0
 
-> **Note for Agents**: This file defines the operational protocols for the mcm-analysis skill. Adhere to these guidelines to ensure consistency with the codebase and project goals.
+> **Note for Agents**: This file defines the operational protocols for the mcm-analysis skill v2.0. 
+> **Architecture Change**: v2.0 uses LLM-driven workflows with external skill integration. Scripts are minimized to I/O operations only.
 
 ## 1. Build & Verification Commands
 
-This project is a Python scripts/templates collection without poetry/setuptools. No formal build step required.
+This project is a Python templates collection without poetry/setuptools. No formal build step required.
 
 ### 🧪 Testing & Verification
 
-**Run a Single Script (Primary verification method):**
+**Run Remaining Scripts:**
 
 ```bash
 # Test init_project.py
 python scripts/init_project.py --problem C --year 2026 --team "Test" --path ./temp_output
 # Cleanup: Remove-Item -Recurse -Force ./temp_output  (PowerShell) or rm -rf ./temp_output
-
-# Test generate_outline.py  
-python scripts/generate_outline.py --problem-type C --output ./temp_outline.md
-# Cleanup: rm ./temp_outline.md
-
-# Test humanize_text.py (analyze-only mode - no output file created)
-python scripts/humanize_text.py --input README.md --analyze-only
 
 # Test check_format.py (requires pypdf)
 python scripts/check_format.py paper.pdf --verbose
@@ -39,24 +33,19 @@ python templates/visualization/plot_templates/heatmap.py
 python templates/visualization/plot_templates/time_series.py
 ```
 
-**Run Example Demos (v1.2.2+):**
+**Run Example Demos:**
 
 ```bash
 # Run all visualization demos (generates sample_outputs/)
 python examples/01_visualization_demos/demo_all_plots.py
 python examples/01_visualization_demos/demo_pareto_frontier.py
 python examples/01_visualization_demos/demo_sensitivity.py
-
-# Test humanize_text with sample file
-python scripts/humanize_text.py --input examples/02_script_usage/sample_input/sample_draft.md --analyze-only
 ```
 
 **Verify Script Help (quick syntax check):**
 
 ```bash
 python scripts/init_project.py --help
-python scripts/generate_outline.py --help
-python scripts/humanize_text.py --help
 python scripts/check_format.py --help
 ```
 
@@ -201,10 +190,6 @@ $x^2 + y^2 = r^2$
 TEMPLATE = "\\documentclass{article}"
 ```
 
-**Anti-AI writing patterns (for scripts/humanize_text.py):**
-- Avoid: "It is important to note that", "Furthermore", "delve into"
-- Prefer: Direct statements, varied connectors, specific numbers
-
 ### ⚠️ Error Handling
 
 **File I/O with try/except:**
@@ -232,17 +217,15 @@ Examples:
 )
 ```
 
-## 3. Repository Structure
+## 3. Repository Structure (v2.0)
 
 ```
 mcm-analysis/
 ├── AGENTS.md              # This file (agent instructions)
-├── SKILL.md               # Skill definition and workflow
+├── SKILL.md               # Skill definition and workflow (LLM-driven)
 ├── requirements.txt       # Python dependencies
-├── scripts/               # Executable CLI tools
+├── scripts/               # Minimal CLI tools (I/O only)
 │   ├── init_project.py    # Project scaffolding
-│   ├── generate_outline.py
-│   ├── humanize_text.py   # Anti-AI text processing
 │   ├── check_format.py    # PDF format verification
 │   └── auto_evolve.py     # Self-update mechanism
 ├── templates/
@@ -250,165 +233,92 @@ mcm-analysis/
 │   │   ├── style_config.py    # MCM style + COLORS dict
 │   │   ├── mcm_style.mplstyle # Matplotlib stylesheet
 │   │   └── plot_templates/    # Individual plot types
-│   └── paper_analysis_template.md
-└── references/            # Knowledge base markdown files
-    ├── models-library.md
-    ├── problem-types.md
-    ├── paper-structure.md
-    └── ...
+│   └── latex/             # LaTeX templates
+│       ├── preamble.tex
+│       └── sections/      # Section templates
+├── references/            # Knowledge base markdown files
+│   ├── models-library.md
+│   ├── problem-types.md
+│   ├── paper-structure.md
+│   ├── writing-guide.md
+│   ├── anti-ai-patterns.md
+│   ├── visualization-guide.md
+│   └── judging-criteria.md
+└── examples/              # Example outputs
+    ├── 01_visualization_demos/
+    ├── 03_paper_skeleton/
+    └── 03_problem_analysis/
 ```
 
-## 4. Agent Operational Protocol
+## 4. Agent Operational Protocol (v2.0)
 
-1. **Read Before Edit**: Fully read a script before modifying. Understand argparse logic and imports.
+### Core Philosophy
 
-2. **Verify After Modify**: Run `python script.py --help` or use analyze-only flags to check syntax.
+**Scripts handle I/O, LLM handles intelligence.**
 
-3. **Keep Lightweight**: Avoid heavy dependencies (no pandas unless explicitly requested). Core uses only numpy/matplotlib.
+| Task Type | Approach | Example |
+|-----------|----------|---------|
+| PDF text extraction | Call external `pdf` skill | `skill: pdf` |
+| Problem analysis | LLM reads text + references | Read `problem-types.md` |
+| Model recommendation | LLM consults knowledge base | Read `models-library.md` |
+| Content generation | LLM generates directly | Use `anti-ai-patterns.md` |
+| File operations | Use minimal scripts | `init_project.py` |
+
+### Workflow
+
+1. **Read SKILL.md First**: Understand the workflow definitions before any task.
+
+2. **Use External Skills**: For PDF extraction, data analysis, call appropriate skills:
+   - `pdf` / `markitdown`: PDF text extraction
+   - `xlsx`: Excel data reading
+   - `exploratory-data-analysis`: Automatic EDA
+   - `scientific-visualization`: Figure generation
+
+3. **Reference Knowledge Base**: Always consult `references/` files:
+   - `problem-types.md`: Problem classification
+   - `models-library.md`: Model selection
+   - `paper-structure.md`: Writing structure
+   - `anti-ai-patterns.md`: Human-like writing
 
 4. **Language Policy**:
    - Code comments: English
-   - User-facing output: Follow user preference (often Chinese with English technical terms)
+   - User-facing output: Chinese (with English technical terms)
 
 5. **Testing Pattern**: After modifying visualization templates, run the `__main__` block to verify plots render.
 
 6. **Version Control**: Use `python scripts/auto_evolve.py` to commit changes after session.
 
----
+## 5. Architecture Evolution
 
-## 5. Development Roadmap: 论文自动化生成引擎
+### v1.x (Script-Driven)
+- Heavy Python scripts for analysis (~800 lines)
+- Regex-based parsing (fragile)
+- Keywords matching (low accuracy)
+- High maintenance cost
 
-> **目标**: 将 MCM-Analysis 从可视化工具进化为端到端论文自动生成引擎
-> **预计版本**: v1.3.0 → v2.0.0
+### v2.0 (LLM-Driven) ✅ CURRENT
+- Minimal scripts (~200 lines, I/O only)
+- LLM semantic understanding (robust)
+- Knowledge base references (high accuracy)
+- Low maintenance, high flexibility
 
-### Phase 1: 论文框架自动化生成 ✅ COMPLETED (v1.3.0)
+### Key Changes in v2.0
 
-**目标**: 根据题型自动生成完整的 LaTeX 论文骨架
+**Removed Scripts:**
+- `parse_problem.py` → Use `pdf` skill + LLM analysis
+- `generate_outline.py` → LLM generates directly
+- `humanize_text.py` → LLM applies patterns directly
+- `generate_paper_skeleton.py` → LLM + templates
 
-**实现内容**:
-- [x] 新增 `scripts/generate_paper_skeleton.py` - 核心脚本
-- [x] 新增 `templates/latex/` - LaTeX 模板目录
-  - [x] `preamble.tex` - LaTeX 前言/宏包配置
-  - [x] `sections/` - 结构级和初稿级章节模板 (16个文件)
-- [x] 支持两种模式:
-  - **结构级 (structure)**: 标题 + 提纲 + 图表位置标注 (~3页)
-  - **初稿级 (draft)**: 完整中文初稿内容 (~12-15页)
-- [x] 交互式询问用户选择模式
+**Retained Scripts:**
+- `init_project.py` - Directory creation (I/O)
+- `check_format.py` - PDF validation (I/O)
+- `auto_evolve.py` - Git operations (I/O)
 
-**验证命令**:
-```bash
-python scripts/generate_paper_skeleton.py --help
-python scripts/generate_paper_skeleton.py -p C -y 2026 --mode structure
-python scripts/generate_paper_skeleton.py -p C -y 2026 --mode draft
-```
-
----
-
-### Phase 2: 题目智能解析 ✅ COMPLETED (v1.4.0)
-
-**目标**: 自动读取题目 PDF，提取关键信息
-
-**实现内容**:
-- [x] 新增 `scripts/parse_problem.py` - 题目解析脚本
-- [x] 集成 `pypdf`/`pdfplumber` 进行 PDF 读取
-- [x] 功能:
-  - 识别问题类型 (A-F) - 基于关键词匹配
-  - 提取子问题 (Q1, Q2, Q3...) - 正则表达式匹配
-  - 识别数据文件引用 - 文件名模式匹配
-  - 提取关键约束条件 - 关键词识别
-- [x] 输出: 结构化 JSON + Markdown 报告
-
-**验证命令**:
-```bash
-python scripts/parse_problem.py --help
-python scripts/parse_problem.py 2026_MCM_Problem_C.pdf
-python scripts/parse_problem.py problem.pdf -o ./analysis/ --format both
-```
-
-**预计版本**: v1.4.0 ✅ COMPLETED
+**Enhanced:**
+- `SKILL.md` - Complete workflow definitions
+- `references/` - Comprehensive knowledge base
 
 ---
 
-### Phase 3: 模型代码自动生成 ⏳ PENDING
-
-**目标**: 根据问题分析结果，自动生成模型代码框架
-
-**计划内容**:
-- [ ] 新增 `templates/models/` - 模型代码模板库
-  - 优化类: 线性规划、整数规划、遗传算法
-  - 预测类: ARIMA、LSTM、XGBoost
-  - 网络类: 最短路径、最大流、PageRank
-  - 动态系统: ODE求解、系统动力学
-- [ ] 新增 `scripts/generate_model_code.py` - 代码生成脚本
-- [ ] 根据题目分析自动匹配并生成代码框架
-
-**预计版本**: v1.5.0
-
----
-
-### Phase 4: 数据处理自动化 ⏳ PENDING
-
-**目标**: 自动识别和预处理题目数据
-
-**计划内容**:
-- [ ] 新增 `scripts/process_data.py` - 数据处理脚本
-- [ ] 功能:
-  - 读取 CSV/Excel 数据文件
-  - 自动生成数据探索报告 (EDA)
-  - 数据清洗代码生成
-  - 特征工程建议
-
-**预计版本**: v1.6.0
-
----
-
-### Phase 5: 论文内容自动生成 ⏳ PENDING
-
-**目标**: 自动生成各章节的初稿内容
-
-**计划内容**:
-- [ ] 新增 `scripts/generate_section.py` - 章节生成脚本
-- [ ] 每个章节使用专门的 prompt 模板:
-  - Introduction: 背景 + 问题重述 + 贡献
-  - Assumptions: 假设列表 + 合理性论证
-  - Model: 模型描述 + 公式 + 伪代码
-  - Results: 结果描述 + 图表引用
-  - Sensitivity: 灵敏度分析模板
-  - Conclusion: 总结 + 局限性 + 未来工作
-- [ ] 自动应用 `anti-ai-patterns.md` 人性化处理
-
-**预计版本**: v1.7.0
-
----
-
-### Phase 6: 一键论文生成引擎 ⏳ PENDING
-
-**目标**: 整合所有组件，实现端到端自动化
-
-**计划内容**:
-- [ ] 新增 `scripts/generate_paper.py` - 主控脚本
-- [ ] 完整流程:
-  ```
-  题目PDF → 解析 → 模型选择 → 代码生成 → 运行分析 → 
-  生成图表 → 写作各章节 → 人性化处理 → 格式检查 → LaTeX编译 → PDF
-  ```
-- [ ] 支持中间步骤人工干预/修改
-- [ ] 支持增量生成 (只重新生成修改的部分)
-
-**预计版本**: v2.0.0
-
----
-
-### 开发进度总览
-
-| Phase | 名称 | 状态 | 版本 |
-|-------|------|------|------|
-| 1 | 论文框架自动化生成 | ✅ COMPLETED | v1.3.0 |
-| 2 | 题目智能解析 | ✅ COMPLETED | v1.4.0 |
-| 3 | 模型代码自动生成 | ⏳ PENDING | v1.5.0 |
-| 4 | 数据处理自动化 | ⏳ PENDING | v1.6.0 |
-| 5 | 论文内容自动生成 | ⏳ PENDING | v1.7.0 |
-| 6 | 一键论文生成引擎 | ⏳ PENDING | v2.0.0 |
-
----
-*MCM-Analysis Skill v1.3.0 - Agent Guidelines*
+*MCM-Analysis Skill v2.0 - LLM-Driven Architecture*

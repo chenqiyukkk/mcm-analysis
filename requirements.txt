@@ -1,4 +1,4 @@
-# MCM-Analysis Dependencies
+# MCM-Analysis Dependencies v2.0
 # Python 3.8+
 # Install: pip install -r requirements.txt
 
@@ -6,10 +6,16 @@
 matplotlib>=3.7.0
 numpy>=1.24.0
 
-# Core - PDF Processing
+# Core - PDF Processing (for check_format.py)
 pypdf>=3.0.0
 
 # Additional dependencies for visualization templates
 scipy>=1.10.0        # phase_portrait.py - ODE solving
 networkx>=3.0        # network_graph.py - network visualization
 seaborn>=0.12.0      # heatmap.py - statistical visualization
+
+# Note: v2.0 uses external skills for:
+# - PDF text extraction: pdf / markitdown skills
+# - Excel data reading: xlsx skill
+# - Word document generation: docx skill
+# - Data analysis: exploratory-data-analysis skill
