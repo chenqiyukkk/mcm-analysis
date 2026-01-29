@@ -1,0 +1,219 @@
+% ============================================================
+% MCM-Analysis v2.1 Deep Template: Model Development
+% 基于2024 O奖论文结构设计
+% ============================================================
+
+\section{Model Preparation}
+
+% ============================================================
+% 2.1 Assumptions and Justifications
+% 【数量目标: 4-6个假设】
+% 【格式】: 每个假设 = 陈述 + 理由
+% ============================================================
+\subsection{Assumptions and Justifications}
+
+% [LLM生成指导]
+% 格式:
+% • Assumption N: [清晰陈述假设内容]
+%   Justification: [为什么这个假设合理 - 1-3句话]
+
+\begin{itemize}
+    \item \textbf{Assumption 1: [假设名称]}
+    
+    [假设内容陈述]
+    
+    \textit{Justification:} [理由说明，可引用文献支持]
+    
+    \item \textbf{Assumption 2: [假设名称]}
+    
+    [假设内容陈述]
+    
+    \textit{Justification:} [理由说明]
+    
+    \item \textbf{Assumption 3: [假设名称]}
+    
+    [假设内容陈述]
+    
+    \textit{Justification:} [理由说明]
+    
+    % 继续添加更多假设...
+\end{itemize}
+
+% ============================================================
+% 2.2 Notations
+% 【格式】: 标准三列表格
+% ============================================================
+\subsection{Notations}
+
+This section introduces the symbols and their descriptions used in this paper.
+
+\begin{table}[H]
+\centering
+\caption{Notations Table}
+\begin{tabular}{clc}
+\toprule
+\textbf{Symbol} & \textbf{Definition} & \textbf{Unit} \\
+\midrule
+$x$ & [变量x的定义] & [单位] \\
+$y$ & [变量y的定义] & [单位] \\
+$\alpha$ & [参数alpha的定义] & - \\
+$\beta$ & [参数beta的定义] & - \\
+% 继续添加更多符号...
+\bottomrule
+\end{tabular}
+\label{tab:notations}
+\end{table}
+
+\textit{Note: Some variables not listed above will be defined in detail in each section.}
+
+% ============================================================
+% 2.3 Data Collection and Visualization (如果有数据)
+% 【可选】: 仅当问题提供数据时使用
+% ============================================================
+\subsection{Data Collection and Visualization}
+
+% [LLM生成指导]
+% 如果问题提供了数据文件，需要:
+% 1. 列出数据来源表
+% 2. 展示数据分布可视化
+
+% 数据来源表模板:
+% \begin{table}[htbp]
+%     \centering
+%     \caption{Data Sources}
+%     \begin{tabular}{ll}
+%         \toprule
+%         \textbf{Data Type} & \textbf{Source} \\
+%         \midrule
+%         [数据类型1] & [来源/URL] \\
+%         [数据类型2] & [来源/URL] \\
+%         \bottomrule
+%     \end{tabular}
+%     \label{tab:data_sources}
+% \end{table}
+
+% 数据分布图:
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.7\textwidth]{figures/data_distribution.png}
+%     \caption{Distribution of [数据名称]}
+%     \label{fig:data_dist}
+% \end{figure}
+
+[如果有数据，在此生成数据描述和可视化]
+
+% ============================================================
+\section{Model Establishment}
+% ============================================================
+
+% ============================================================
+% 3.1 Model I: [模型名称]
+% 【结构】: 每个模型独立subsection
+% 【必须包含】: 模型思维导图
+% ============================================================
+\subsection{Model I: [模型名称]}
+
+% [LLM生成指导]
+% 每个主模型应该有:
+% 1. 模型思维导图 (Figure)
+% 2. 多个sub-subsection解释各部分
+% 3. 核心公式 + 推导过程
+% 4. 参数说明
+
+% 模型思维导图
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{figures/model1_mindmap.png}
+    \caption{Framework of Model I: [模型名称]}
+    \label{fig:model1_mindmap}
+\end{figure}
+
+% ---- 子模型/组件 ----
+\subsubsection{[组件1名称]}
+
+% [物理/数学原理说明]
+% 如果有物理过程，添加示意图:
+% \begin{figure}[htbp]
+%     \centering
+%     \includegraphics[width=0.6\textwidth]{figures/mechanism.png}
+%     \caption{Schematic of [机制名称]}
+%     \label{fig:mechanism}
+% \end{figure}
+
+[组件1的详细说明]
+
+% 核心公式
+The [物理量] can be expressed as:
+\begin{equation}
+    [公式内容]
+    \label{eq:model1_eq1}
+\end{equation}
+where $[变量1]$ represents [含义], and $[变量2]$ denotes [含义].
+
+\subsubsection{[组件2名称]}
+
+[组件2的详细说明]
+
+\begin{equation}
+    [公式内容]
+    \label{eq:model1_eq2}
+\end{equation}
+
+% ---- 继续添加更多子模型 ----
+
+% ============================================================
+% 3.2 Model II: [模型名称] (如果有第二个模型)
+% ============================================================
+\subsection{Model II: [模型名称]}
+
+% 同样的结构:
+% 1. 模型思维导图
+% 2. 子组件说明
+% 3. 核心公式
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{figures/model2_mindmap.png}
+    \caption{Framework of Model II: [模型名称]}
+    \label{fig:model2_mindmap}
+\end{figure}
+
+\subsubsection{[组件名称]}
+
+[组件说明和公式]
+
+% ============================================================
+% 3.N Model Overview / Integration
+% 【可选】: 如果有多个模型，说明如何整合
+% ============================================================
+\subsection{Model Integration}
+
+% [LLM生成指导]
+% 说明各模型之间的关系
+% 可以用流程图展示数据流
+
+[说明各模型如何协同工作]
+
+% ============================================================
+% 算法伪代码 (O奖常见!)
+% 【建议】: 使用algorithm环境
+% ============================================================
+% 需要在preamble中添加: \usepackage{algorithm, algorithmic}
+
+% \begin{algorithm}[htbp]
+%     \caption{[算法名称]}
+%     \label{alg:main}
+%     \begin{algorithmic}[1]
+%         \REQUIRE [输入参数]
+%         \ENSURE [输出结果]
+%         \STATE Initialize parameters
+%         \FOR{$t = 1$ to $T$}
+%             \STATE [步骤1]
+%             \STATE [步骤2]
+%             \IF{[条件]}
+%                 \STATE [操作]
+%             \ENDIF
+%         \ENDFOR
+%         \RETURN [返回值]
+%     \end{algorithmic}
+% \end{algorithm}

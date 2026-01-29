@@ -3,10 +3,11 @@ name: mcm-analysis
 description: Use when analyzing MCM/ICM (Mathematical Contest in Modeling) problems, developing mathematical models, writing competition papers, or preparing for COMAP modeling contests. Triggers on keywords like MCM, ICM, mathematical modeling competition, COMAP, or when user provides a modeling competition problem.
 ---
 
-# MCM/ICM Analysis Skill v2.0
+# MCM/ICM Analysis Skill v2.1
 
 > **Architecture**: LLM-driven workflow with external skill integration
 > **Philosophy**: Scripts handle I/O, LLM handles intelligence
+> **Version 2.1 Update**: Visual-First Workflow & Deep Content Templates
 
 A comprehensive skill for Mathematical Contest in Modeling (MCM) and Interdisciplinary Contest in Modeling (ICM) teams. Designed to help beginner teams produce O-award quality papers.
 
@@ -15,7 +16,8 @@ A comprehensive skill for Mathematical Contest in Modeling (MCM) and Interdiscip
 This skill provides end-to-end support for MCM/ICM competition:
 - **Problem Analysis**: Identify problem type, extract requirements, recommend models
 - **Modeling Guidance**: Match problems with proven modeling approaches
-- **Paper Writing**: Generate outlines, provide writing templates, ensure human-like output
+- **Visual Planning**: Force-planning of O-award mandatory figures
+- **Paper Writing**: Generate outlines, provide *deep* writing templates, ensure human-like output
 - **Quality Assurance**: Format checking, self-evaluation against judging criteria
 
 ## Critical: Writing Language Policy
@@ -42,6 +44,7 @@ This skill integrates with external skills for specific tasks:
 | `exploratory-data-analysis` | Automatic EDA reports | Analyze provided datasets |
 | `statistical-analysis` | Statistical tests and analysis | Validate model results |
 | `scientific-visualization` | Generate publication figures | Create charts and plots |
+| `perplexity-search` | Find literature and data | Literature review, data sourcing |
 
 ---
 
@@ -270,31 +273,28 @@ Validation: [How to validate the combined model]
 
 #### Step 1: Load Structure Template
 
-Read `references/paper-structure.md` for section guidelines.
+Read `references/paper-structure.md` and `templates/latex/sections_deep/` for detailed guidelines.
 
-#### Step 2: Generate Content
+#### Step 2: Generate Content (Deep Mode)
 
-**For each section:**
+**For each section, use the new Deep Templates:**
 
 1. **Introduction (引言)**
-   - Background context (Chinese)
-   - Problem restatement
-   - Paper organization
+   - Use `templates/latex/sections_deep/introduction_deep.tex`
+   - MUST include: Problem Background (with data), Literature Review (with table), Restatement, Our Work (with Flowchart).
 
 2. **Assumptions (假设)**
-   - List 5-8 key assumptions
-   - Justification for each
+   - Use `templates/latex/sections_deep/model_deep.tex`
+   - 4-6 Assumptions, each with Justification.
 
 3. **Model (模型建立)**
-   - Mathematical notation
-   - Model description
-   - Key equations
-   - Algorithm pseudocode
+   - Use `templates/latex/sections_deep/model_deep.tex`
+   - MUST include: Mindmap for each model, Formula derivation, Algorithm pseudocode.
 
 4. **Results (结果)**
-   - Key findings
-   - Figure/table references
-   - Interpretation
+   - Use `templates/latex/sections_deep/results_deep.tex`
+   - Separate subsections for each Task.
+   - MUST include: Visual results, quantitative analysis.
 
 5. **Sensitivity Analysis (灵敏度分析)**
    - Parameters tested
@@ -342,7 +342,7 @@ Reference `references/anti-ai-patterns.md`:
 
 #### Step 1: Consult Visualization Guide
 
-Read `references/visualization-guide.md` for problem-type-specific recommendations.
+Read `references/visualization-guide.md` for problem-type-specific recommendations and O-Award Checklist.
 
 #### Step 2: Recommend Chart Types
 
@@ -350,6 +350,7 @@ Based on data and analysis needs:
 
 | Purpose | Recommended Chart | Template |
 |---------|------------------|----------|
+| **Flowchart** | Workflow Diagram | `templates/visualization/plot_templates/flowchart.py` |
 | Time series | Line plot with confidence bands | `templates/visualization/plot_templates/time_series.py` |
 | Correlations | Heatmap | `templates/visualization/plot_templates/heatmap.py` |
 | Optimization | Pareto frontier | `templates/visualization/plot_templates/pareto_frontier.py` |
@@ -368,15 +369,7 @@ from templates.visualization.plot_templates.time_series import plot_forecast
 use_mcm_style()
 
 # Generate plot
-fig, ax = plot_forecast(
-    time_historical=...,
-    values_historical=...,
-    time_forecast=...,
-    values_forecast=...,
-    title="...",
-    xlabel="...",
-    ylabel="..."
-)
+fig, ax = plot_forecast(...)
 
 # Save
 save_figure(fig, "figure_name", output_dir=Path("./figures"))
@@ -407,20 +400,16 @@ Check:
 
 #### Step 2: Content Review
 
-Against `references/judging-criteria.md`:
+Against `references/o-award-checklist.md`:
 
 **Completeness Checklist:**
 - [ ] Summary Sheet (1 page)
-- [ ] Table of Contents
-- [ ] Introduction with problem restatement
-- [ ] Clear assumptions with justifications
-- [ ] Mathematical model with notation
-- [ ] Results with figures/tables
-- [ ] Sensitivity analysis
-- [ ] Strengths and weaknesses
-- [ ] Conclusions
-- [ ] References
-- [ ] AI Use Report (separate, not counted)
+- [ ] **Figure 3: Workflow Diagram** (Critical!)
+- [ ] **Figure 2: Literature Review Table**
+- [ ] **Figure 5+: Model Framework Diagrams**
+- [ ] Algorithm Pseudocode
+- [ ] Sensitivity Analysis (Tornado/Heatmap)
+- [ ] References (7-15 citations)
 
 #### Step 3: Self-Evaluation
 
@@ -437,88 +426,13 @@ Estimate judging level:
 
 ---
 
-## Special Capabilities
-
-### A. Paper Ingest Mode (论文解析模式)
-
-**Trigger**: "解析这篇论文 [PDF路径]"
-
-**Workflow**:
-1. **Extract**: Call `pdf` or `markitdown` skill to read PDF
-2. **Analyze**: Review against `templates/paper_analysis_template.md`
-   - Identify Year, Problem, Title, Type
-   - Decompose questions and strategies
-   - Extract models, data sources, conclusions
-3. **Generate**: Create markdown file `YYYY-Type-paper-XX.md`
-4. **Save**: Write to `D:/ICM/解析结果/papers/` or user-specified path
-
-### B. Self-Evolution Mode (自我进化模式)
-
-**Trigger**: "收工" / "进化" / "提交更新"
-
-**Workflow**:
-1. **Summarize**: Review session for new insights (models, prompts, code)
-2. **Persist**: (Optional) Update `references/models-library.md` if new models discovered
-3. **Push**: Execute `python scripts/auto_evolve.py` to commit and push to GitHub
-
----
-
-## Quick Reference
-
-### Problem Type Quick Reference
-
-| Type | Name | Focus | Key Models |
-|------|------|-------|------------|
-| A | Continuous | Physics, dynamics, optimization | Differential equations, PDE, optimization |
-| B | Discrete | Combinatorics, algorithms | Graph theory, integer programming, simulation |
-| C | Data Insights | Data analysis, prediction | ML/DL, time series, statistical analysis |
-| D | Operations/Network | Logistics, networks | Network optimization, queueing, scheduling |
-| E | Sustainability | Environment, ecology | System dynamics, multi-objective optimization |
-| F | Policy | Social systems, policy | Game theory, agent-based modeling, AHP |
-
-### Competition Timeline
-
-| Day | Focus | This Skill Helps With |
-|-----|-------|----------------------|
-| Day 1 (Thu PM) | Problem analysis, model selection | Workflow 1 + 3 |
-| Day 2 (Fri) | Core modeling, initial coding | Model guidance, code templates |
-| Day 3 (Sat) | Results, sensitivity analysis | Visualization, validation |
-| Day 4 (Sun) | Writing, polishing | Workflow 4 |
-| Day 5 (Mon AM) | Final review, submission | Workflow 6 |
-
-### Important Reminders
-
-1. **25 Page Limit**: Includes EVERYTHING (summary, content, references, appendices)
-2. **No Identifying Info**: Team number only, no names or school names
-3. **AI Disclosure Required**: Must include "Report on Use of AI" section (not counted in 25 pages)
-4. **Deadline is HARD**: 9:00 PM EST Monday - no exceptions
-5. **Summary is Critical**: Judges weight summary heavily - write it LAST but make it BEST
-
----
-
-## Reference Files
-
-| File | Purpose |
-|------|---------|
-| `references/models-library.md` | 50+ models categorized by type |
-| `references/problem-types.md` | Historical patterns for A-F problems |
-| `references/paper-structure.md` | O-award paper structure templates |
-| `references/writing-guide.md` | Academic writing phrases and patterns |
-| `references/anti-ai-patterns.md` | Human writing style guide |
-| `references/visualization-guide.md` | Chart selection & O-award visualization patterns |
-| `references/judging-criteria.md` | COMAP official judging standards |
-
----
-
-## Workflow 7: Full Paper Generation Pipeline (端到端论文生成)
+## Workflow 7: Full Paper Generation Pipeline (v2.1 Visual-First)
 
 ### Trigger Conditions
 - User says: "生成论文", "写完整论文", "一键建模", "从题目到论文"
 - User provides: PDF path `[+ data file path]`
 
 ### Pipeline Overview
-
-This workflow orchestrates Workflows 1-6 to generate a complete paper draft from problem PDF to LaTeX output.
 
 **Input**: Problem PDF + (optional) data files  
 **Output**: Complete LaTeX project ready for Overleaf  
@@ -539,355 +453,159 @@ python scripts/init_project.py --problem [X] --year [YYYY] --team [TeamName] --p
 - `code/` - Python scaffolding
 - `data/` - Data folders
 
-**User Prompt**:
-```
-📁 项目初始化完成
-已创建目录: MCM_2026_C_TeamName/
-
-请确认:
-- 题目类型: C (Data Insights)
-- 年份: 2026
-- 团队名: TeamName
-
-是否正确? (是/否/修改)
-```
-
 ---
 
 ### Phase 2: Problem Analysis (调用 Workflow 1)
 
-**Step 1**: Extract problem text
+**Step 1**: Extract problem text (skill: `pdf`)
+**Step 2**: Analyze problem (Type, Tasks, Constraints)
+**Step 3**: Recommend Models
+
+**Output Format**: (Structured Analysis Report)
+
+---
+
+### Phase 2.5: Visual Planning (NEW - Critical) ⭐
+
+**Action**: Before writing a single word, plan the figures!
+
+**Steps**:
+1. Read `references/visualization-guide.md`.
+2. Generate a **Figure List** for the paper.
+3. **MUST INCLUDE**:
+   - Figure 1: Problem Background
+   - Figure 2: Literature Review Table
+   - Figure 3: Workflow Diagram (using `flowchart.py`)
+   - Figure 4: Data Visualization
+   - Figure 5+: Model Frameworks
+
+**User Prompt**:
 ```
-Call skill: pdf
-Request: Extract all text from [PDF path]
-```
-
-**Step 2**: Analyze problem (参考 Workflow 1)
-- Identify problem type (A-F)
-- Extract tasks (Q1, Q2, Q3...)
-- List data files
-- Identify constraints
-- Recommend 2-4 models
-
-**Output Format**:
-```
-## 📊 题目分析报告
-
-**年份**: 2026
-**题目类型**: C (Data Insights) - 数据洞察型
-**置信度**: High
-
-### 任务分解
-1. **Q1**: [Task description]
-2. **Q2**: [Task description]
-3. **Q3**: [Task description]
-
-### 数据文件
-- data.csv: [description]
-
-### 约束条件
-- 25页限制
-- 需要提交备忘录
-
-### 推荐模型
-1. **随机森林 (Random Forest)**
-   - 适用性: [explanation]
-   - O奖案例: 2024 Problem C
-
-2. **LSTM时间序列**
-   - 适用性: [explanation]
-   - O奖案例: 2023 Problem A
-
-⏸️ 请确认分析结果是否正确? (是/否/修改)
+📊 视觉规划完成
+规划图表: 15张
+1. [ ] Figure 1: ...
+2. [ ] Figure 2: ...
+3. [ ] Figure 3: Workflow Diagram (代码已准备)
+...
+⏸️ 请确认视觉规划? (是/否/调整)
 ```
 
 ---
 
-### Phase 3: Data Exploration (可选，调用 Workflow 2)
+### Phase 3: Data Exploration (Optional)
 
 **Condition**: If data files provided
-
-**Step 1**: Load and analyze data
-```
-Call skill: xlsx (for Excel)
-Call skill: exploratory-data-analysis (for CSV)
-Request: Generate comprehensive EDA report
-```
-
-**Step 2**: Summarize findings
-- Data scale (rows, columns)
-- Key features
-- Data quality issues
-- Feature types
-- Correlations
-
-**Output Format**:
-```
-## 📈 数据探索报告
-
-**数据集**: data.csv
-**规模**: 1,000行 × 15列
-
-### 关键发现
-1. **时间范围**: 2020-2024年
-2. **主要变量**: [变量列表]
-3. **数据质量**: 缺失值占比2.3%
-4. **特征类型**: 数值型12个，类别型3个
-
-### 建模建议
-- 适合时间序列分析
-- 建议标准化处理
-- 特征X与Y高度相关(r=0.85)
-
-⏸️ 请确认数据理解是否正确? (是/否/跳过)
-```
+**Action**: Load, Analyze, Visualize (Workflow 2)
 
 ---
 
-### Phase 4: Model Selection (调用 Workflow 3)
+### Phase 3.5: Literature Search (NEW) ⭐
 
-**Action**: Present recommended models from Phase 2
+**Action**: Search for real academic references.
 
-**User Interaction**:
-```
-## 🎯 模型选择
+**Steps**:
+1. Call `perplexity-search` skill.
+2. Query: "[Problem Topic] mathematical modeling review".
+3. Save 3-5 key references to `references.bib`.
+4. Generate comparison table content for Literature Review.
 
-基于题目分析，推荐以下模型组合:
+---
 
-1. **随机森林 (Random Forest)** ⭐ 推荐
-   - 用于: 特征重要性分析 + 基准预测
-   - 优势: 可解释性强，适合作为基准
+### Phase 4: Model Selection & Architecture
 
-2. **LSTM神经网络**
-   - 用于: 时间序列预测
-   - 优势: 捕捉长期依赖关系
-
-3. **XGBoost集成学习**
-   - 用于: 最终预测优化
-   - 优势: 精度高，处理复杂模式
-
-⏸️ 请选择要使用的模型 (输入序号，如: 1,2 或 all):
-```
-
-**Output**: Selected model list → saved to `paper/models_selected.md`
+**Action**: Present recommended models and how they connect.
 
 ---
 
 ### Phase 5: Paper Outline Generation
 
-**Action**: Generate complete outline based on:
-- `references/paper-structure.md`
-- Problem type and tasks
-- Selected models
+**Action**: Generate outline using **Deep Templates**.
 
-**Output Format**:
-```
-## 📝 论文大纲
-
-### 1. Summary (1页)
-- 问题重述
-- 方法概述
-- 主要结果
-
-### 2. Introduction (2-3页)
-- 2.1 Problem Background
-- 2.2 Restatement of Problems
-- 2.3 Our Work
-
-### 3. Assumptions and Notations (1-1.5页)
-- 3.1 Assumptions
-- 3.2 Notations
-
-### 4. Model Development (12-15页)
-- 4.1 Model I: 随机森林
-- 4.2 Model II: LSTM
-- 4.3 Model III: XGBoost
-
-### 5. Results and Analysis (4-5页)
-- 5.1 Task 1 Results
-- 5.2 Task 2 Results
-- 5.3 Task 3 Results
-
-### 6. Sensitivity Analysis (1-1.5页)
-
-### 7. Strengths and Weaknesses (0.5-1页)
-
-### 8. Conclusions (1-2页)
-
-⏸️ 大纲是否需要调整? (是/否)
-```
+**Structure**:
+- 1. Introduction (Background, Lit Review, Restatement, Our Work)
+- 2. Model Preparation (Assumptions, Notations, Data)
+- 3. Model Establishment (Model I, Model II, Algorithm)
+- 4. Results (Task 1, Task 2, Task 3, Validation)
+- 5. Evaluation (Sensitivity, Strengths, Weaknesses)
+- 6. Conclusion
 
 ---
 
-### Phase 6: Content Generation (调用 Workflow 4)
+### Phase 6: Content Generation (Deep Mode)
 
 **For each section**, generate content using:
-1. `templates/latex/sections/*_draft.tex` as base
-2. `references/anti-ai-patterns.md` for human-like writing
-3. Problem-specific context from analysis
+1. `templates/latex/sections_deep/*.tex` as base.
+2. `references/literature-review-guide.md` for Intro.
+3. `references/validation-patterns.md` for Results.
+4. `references/anti-ai-patterns.md` for style.
 
 **Generation Order**:
-1. Summary
-2. Introduction
-3. Assumptions
-4. Model Development
-5. Results
-6. Sensitivity
-7. Strengths
-8. Conclusion
-
-**Progress Display**:
-```
-📝 正在生成论文内容...
-
-✅ Summary 完成 (300字)
-✅ Introduction 完成 (800字)
-✅ Assumptions 完成 (5个假设)
-✅ Model Development 完成 (3个模型)
-⏳ Results 生成中...
-```
+1. Introduction (fill deep subsections)
+2. Model Preparation
+3. Model Establishment (fill deep subsections)
+4. Results (fill per Task)
+5. Sensitivity
+6. Strengths/Conclusion
+7. **Summary Sheet (Write LAST)**
 
 **Visualization Code Generation**:
-For each figure needed:
-```python
-# Auto-generated for: [figure description]
-from templates.visualization import use_mcm_style, save_figure
-from templates.visualization.plot_templates import plot_forecast
+For the mandatory figures planned in Phase 2.5, generate Python code.
 
-# TODO: Replace with actual data
-fig, ax = plot_forecast(...)
-save_figure(fig, "figure_1", output_dir=Path("./figures"))
-```
+---
 
-Save to: `code/auto_generated_figures.py`
+### Phase 6.5: Thickness Check (NEW) ⭐
+
+**Action**: Verify word counts.
+
+**Targets**:
+- Introduction: >800 words
+- Model: >2500 words
+- Results: >1000 words
+- **Total**: >6000 words (approx 20 pages)
 
 ---
 
 ### Phase 7: LaTeX Assembly
 
-**Action**: Assemble complete `paper/main.tex`
-
-**Structure**:
-```latex
-\documentclass[12pt]{article}
-\input{preamble}  % From templates/latex/preamble.tex
-
-\begin{document}
-
-% Summary
-\input{sections/summary}
-
-\newpage
-\setcounter{page}{1}
-
-% Main Content
-\input{sections/introduction}
-\input{sections/assumptions}
-\input{sections/model}
-\input{sections/results}
-\input{sections/sensitivity}
-\input{sections/strengths}
-\input{sections/conclusion}
-
-\bibliographystyle{plain}
-\bibliography{sections/references}
-
-\end{document}
-```
-
-**Copy Templates**:
-- Copy `templates/latex/sections/*_draft.tex` → `paper/sections/*.tex`
-- Fill in generated content
-- Add TODO markers for missing data
+**Action**: Assemble complete `paper/main.tex`.
 
 ---
 
 ### Phase 8: Final Output
 
 **Generate**:
-1. Complete LaTeX project in `MCM_YYYY_X_TeamName/`
-2. `OVERLEAF_GUIDE.md` (upload instructions)
-3. `paper_progress.md` (status tracking)
+1. Complete LaTeX project
+2. `OVERLEAF_GUIDE.md`
+3. `paper_progress.md`
 
 **Final Report**:
 ```
 🎉 论文生成完成!
 
-📁 输出目录: MCM_2026_C_TeamName/
-   ├── paper/
-   │   ├── main.tex (完整论文)
-   │   ├── preamble.tex
-   │   └── sections/
-   │       ├── summary.tex
-   │       ├── introduction.tex
-   │       ├── assumptions.tex
-   │       ├── model.tex
-   │       ├── results.tex
-   │       ├── sensitivity.tex
-   │       ├── strengths.tex
-   │       └── conclusion.tex
-   ├── code/
-   │   ├── auto_generated_figures.py
-   │   └── data_preprocessing.py
-   ├── data/
-   │   ├── raw/
-   │   └── processed/
-   ├── OVERLEAF_GUIDE.md
-   └── paper_progress.md
-
-📊 生成统计:
-   - 总页数预估: 18-22页
-   - 章节数: 8个
-   - 模型数: 3个
-   - 图表占位: 6个
-
-⚠️ 注意事项:
-   1. 所有[TODO]标记需要补充实际数据
-   2. 运行 code/auto_generated_figures.py 生成图表
-   3. 按照 OVERLEAF_GUIDE.md 上传到Overleaf
-   4. 将中文翻译为英文后提交
+📊 质量自评:
+   - 总页数预估: 22页 (O奖标准)
+   - 图表数量: 16张
+   - 引用数量: 12条
+   - 必需元素: Workflow(✅), Lit Review(✅), Pseudocode(✅)
 
 下一步: 请查看 OVERLEAF_GUIDE.md 开始上传和编译
 ```
 
 ---
 
-### Special Handling
-
-#### Memo/Letter Requirement
-If problem requires memo/letter:
-```
-检测到题目要求提交备忘录
-
-将在 Conclusion 后添加:
-\section*{Memorandum}
-
-请提供:
-- 收件人: [organization/person]
-- 主题: [subject]
-- 关键建议: [bullet points]
-```
-
-#### Multiple Data Files
-```
-检测到多个数据文件:
-- data1.csv
-- data2.xlsx
-- supplementary.pdf
-
-将分别分析并整合到Results章节
-```
-
----
-
 ## Reference Files
 
-| Script | Purpose |
-|--------|---------|
-| `scripts/init_project.py` | Initialize project directory |
-| `scripts/check_format.py` | Verify PDF format compliance |
-| `scripts/auto_evolve.py` | Git commit and push |
+| File | Purpose |
+|------|---------|
+| `references/models-library.md` | 50+ models categorized by type |
+| `references/visualization-guide.md` | **Mandatory Figure Checklist** & Templates |
+| `references/literature-review-guide.md` | How to write academic reviews |
+| `references/validation-patterns.md` | How to validate models quantitatively |
+| `references/o-award-checklist.md` | **Final Quality Control Checklist** |
+| `references/paper-structure.md` | Structure templates |
+| `references/writing-guide.md` | Academic writing phrases |
+| `references/anti-ai-patterns.md` | Human writing style guide |
 
 ---
 
-*MCM-Analysis Skill v2.0 - LLM-Driven Architecture*
+*MCM-Analysis Skill v2.1 - Visual-First & Deep Content*

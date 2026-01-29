@@ -1,0 +1,175 @@
+% =============================================================================
+% MCM/ICM O-Award Level Results Template
+% Version: 2.1
+% 
+% 【LLM指导】此模板为深度Results，按Task分节展示
+% 【目标字数】1000-1500字 (约4-5页)
+% 【必需图表】5-8张 (每个Task至少1-2张结果图)
+% =============================================================================
+
+\section{Results and Analysis}
+
+% =============================================================================
+% TASK 1
+% =============================================================================
+\subsection{Task 1: [Task Title]}
+% 【LLM指导】为每个Task起一个描述性标题
+
+% -----------------------------------------------------------------------------
+\subsubsection{Simulation Setup}
+% -----------------------------------------------------------------------------
+% 【LLM内容指导】
+% - 说明模拟/计算的设置 (100-150字)
+% - 输入参数和初始条件
+% - 运行环境/时间范围
+
+We applied Model [I/II] to address Task 1. The simulation was conducted with the following settings:
+\begin{itemize}
+    \item [设置1]: [值]
+    \item [设置2]: [值]
+    \item [设置3]: [值]
+\end{itemize}
+
+% -----------------------------------------------------------------------------
+\subsubsection{Results}
+% -----------------------------------------------------------------------------
+% 【LLM内容指导】
+% - 展示核心结果 (200-300字)
+% - 必须包含结果图表
+% - 对图表进行详细解读
+%
+% 【图表引用模式】
+% "The results are shown in Figure X."
+% "As shown in Figure X, we can observe that..."
+% "From Figure X, it is evident that..."
+%
+% 【必须包含】
+% - 至少1张结果图
+% - 具体数值 (不要只说"显著提高")
+
+The simulation results are presented in Figure \ref{fig:task1_result}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/task1_result.png}
+    \caption{[Result Description for Task 1]}
+    \label{fig:task1_result}
+\end{figure}
+
+From Figure \ref{fig:task1_result}, we can observe that:
+\begin{itemize}
+    \item [观察1]: [具体数值描述]
+    \item [观察2]: [具体数值描述]
+    \item [观察3]: [具体数值描述]
+\end{itemize}
+
+% -----------------------------------------------------------------------------
+\subsubsection{Analysis and Conclusions}
+% -----------------------------------------------------------------------------
+% 【LLM内容指导】
+% - 对结果进行深入分析 (100-200字)
+% - 回答Task提出的问题
+% - 给出明确结论
+%
+% 【O奖范例】
+% "Through this model, we can give an answer to the question 2..."
+% "At this point, we can answer question 1..."
+
+Based on the above analysis, we can draw the following conclusions for Task 1:
+\begin{itemize}
+    \item [结论1]
+    \item [结论2]
+\end{itemize}
+
+
+% =============================================================================
+% TASK 2
+% =============================================================================
+\subsection{Task 2: [Task Title]}
+
+\subsubsection{Simulation Setup}
+% [类似Task 1结构]
+
+\subsubsection{Results}
+% [类似Task 1结构]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/task2_result.png}
+    \caption{[Result Description for Task 2]}
+    \label{fig:task2_result}
+\end{figure}
+
+\subsubsection{Analysis and Conclusions}
+% [类似Task 1结构]
+
+
+% =============================================================================
+% TASK 3
+% =============================================================================
+\subsection{Task 3: [Task Title]}
+
+\subsubsection{Simulation Setup}
+% [类似Task 1结构]
+
+\subsubsection{Results}
+% [类似Task 1结构]
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/task3_result.png}
+    \caption{[Result Description for Task 3]}
+    \label{fig:task3_result}
+\end{figure}
+
+\subsubsection{Analysis and Conclusions}
+% [类似Task 1结构]
+
+
+% =============================================================================
+% COMPARISON/VALIDATION (可选但推荐)
+% =============================================================================
+\subsection{Model Validation}
+% 【LLM内容指导】
+% - 验证模型的有效性 (150-250字)
+% - 与已知数据/基准对比
+% - 计算准确率/误差指标
+%
+% 【O奖常用指标】
+% - Accuracy: "The accuracy reaches 94%..."
+% - RMSE: "The RMSE is 0.03..."
+% - Optimization Rate R: "The optimization rate R = 73.3%"
+%
+% 【O奖公式】优化率
+% R = (k_before / k_after) - 1
+
+To validate our model, we compared the predicted results with [基准/已知数据]:
+
+\begin{table}[H]
+\centering
+\caption{Model Validation Results}
+\label{tab:validation}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Metric} & \textbf{Our Model} & \textbf{Baseline} \\
+\midrule
+Accuracy & [值]\% & [值]\% \\
+RMSE & [值] & [值] \\
+Optimization Rate $R$ & [值]\% & - \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The validation results demonstrate that our model [评价].
+
+
+% =============================================================================
+% 【自检清单】
+% [ ] 每个Task有独立subsection
+% [ ] 每个Task有至少1张结果图
+% [ ] 图表有详细解读 (不只是"如图所示")
+% [ ] 包含具体数值 (准确率、误差等)
+% [ ] 每个Task有明确结论
+% [ ] 包含模型验证section
+% [ ] 总字数 >= 1000字
+% =============================================================================

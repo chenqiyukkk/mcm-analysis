@@ -1,5 +1,4 @@
 # MCM Visualization Guide
-
 A comprehensive guide to selecting and designing O-award quality figures for MCM/ICM competitions.
 
 **Version**: 1.2.1 | **Updated**: January 2026
@@ -427,6 +426,38 @@ print("All figures generated!")
 | Labels overlapping | Use `plt.tight_layout()` or `constrained_layout=True` |
 | Legend covers data | Use `optimize_legend_location(ax, prefer_outside=True)` |
 | Missing dependencies | `pip install matplotlib numpy scipy networkx seaborn` |
+
+---
+
+## 10. O-Award Mandatory Figure Checklist (NEW)
+
+Based on 2024 O-Award papers, an Outstanding paper MUST contain:
+
+### Type A (Continuous/Physics) Required Figures
+1.  **Figure 1**: Problem Background (Real photo or schematic)
+2.  **Figure 2**: Literature Review Comparison (Table or Chart)
+3.  **Figure 3**: Workflow/Mindmap Diagram (⭐ CRITICAL)
+4.  **Figure 4**: Data Distribution/Source Visualization
+5.  **Figure 5+**: Model Framework Diagrams (One per model)
+6.  **Figure N-2**: Sensitivity Analysis (Tornado/Spider/Heatmap)
+7.  **Figure N-1**: Multi-scenario Comparison
+8.  **Figure N**: Validation Results (Predicted vs Actual)
+
+### Minimum Quantity Requirements
+| Problem Type | Min Figures | Min Pages |
+|--------------|-------------|-----------|
+| **Type A**   | 15-20       | 22-25     |
+| **Type B**   | 12-18       | 20-24     |
+| **Type C**   | 18-25       | 22-25     |
+| **Type D**   | 15-20       | 22-25     |
+| **Type E**   | 15-20       | 20-24     |
+| **Type F**   | 12-18       | 20-24     |
+
+### Critical Visual Elements
+-   **Schematics**: Don't just show data. Show *how* it works.
+-   **Flowcharts**: Visualize your algorithm steps.
+-   **Tables**: Use tables for Notations, Parameters, and Results Comparison.
+-   **Multi-panel**: Combine related plots (e.g., 2x2 grid) to save space and show relationships.
 
 ---
 
