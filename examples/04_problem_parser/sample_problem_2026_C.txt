@@ -1,0 +1,48 @@
+2026 MCM Problem C: Wordle Game Analysis
+
+Background
+
+The New York Times' Wordle game has become a global phenomenon. Understanding player behavior and game patterns can provide insights into human cognition and decision-making. This problem requires you to analyze Wordle game data and develop models to understand player strategies.
+
+Problem Statement
+
+Task 1: Develop a model to predict the distribution of reported scores for a given Wordle puzzle. Your model should consider word difficulty, letter frequency, and player skill levels.
+
+Task 2: Classify solution words by difficulty level. Identify what features make a word harder or easier to solve, and validate your classification against historical data.
+
+Task 3: Analyze the impact of word attributes (vowel count, repeated letters, commonality) on player performance. Develop a metric to quantify word difficulty.
+
+Task 4: Predict future trends in Wordle player behavior. How will player performance evolve as the game matures and vocabulary becomes more familiar?
+
+Data Description
+
+The following data files are provided for your analysis:
+
+- wordle_data.csv: Contains daily puzzle results including word, date, and score distribution
+- player_stats.xlsx: Player-level statistics including games played and success rates  
+- word_attributes.json: Linguistic features for each solution word
+- historical_trends.txt: Longitudinal data on player behavior over time
+
+You must use all provided datasets in your analysis and cannot use external APIs.
+
+Requirements
+
+1. Your model must achieve at least 85% accuracy on the test set for Task 1.
+2. You should provide confidence intervals for all predictions in Task 2.
+3. The maximum length of your paper is 25 pages including references.
+4. You must include sensitivity analysis for key model parameters in Task 3.
+5. All code must be included in the appendix and properly documented.
+
+Assumptions
+
+- Assume that player behavior is consistent across different time zones.
+- Word difficulty is primarily determined by letter frequency and pattern recognition.
+- The player population is representative of general English speakers.
+- No significant external events (viral trends, media coverage) affect player behavior during the analysis period.
+
+Constraints
+
+- You cannot use machine learning libraries' built-in automated feature selection.
+- All models must be interpretable with clear feature importance metrics.
+- You must cite all data sources and previous Wordle analyses.
+- The prediction model must run in under 5 minutes on standard hardware.
